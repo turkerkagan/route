@@ -46,7 +46,6 @@
             overflow: hidden;
         }
 
-        /* ─── Sidebar ─── */
         .sidebar {
             width: 370px;
             min-width: 320px;
@@ -75,7 +74,6 @@
             margin-bottom: 8px;
         }
 
-        /* ─── Depot ─── */
         .depot-row {
             display: flex;
             align-items: center;
@@ -110,7 +108,6 @@
         input[type="text"]:focus { border-color: #3b82f6; }
         input[type="text"].has-error { border-color: #f87171 !important; }
 
-        /* ─── Address List ─── */
         .address-list {
             display: flex;
             flex-direction: column;
@@ -211,7 +208,6 @@
             margin-top: 5px;
         }
 
-        /* ─── Optimize Button ─── */
         .opt-btn {
             width: 100%;
             padding: 12px;
@@ -231,7 +227,6 @@
         .opt-btn:hover:not(:disabled) { background: #15803d; }
         .opt-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* ─── Result Panel ─── */
         .result-panel {
             border-top: 1px solid #e2e8f0;
             flex-shrink: 0;
@@ -289,11 +284,9 @@
         .raddr { flex: 1; font-size: 0.8rem; color: #374151; line-height: 1.4; }
         .rdur  { font-size: 0.72rem; color: #94a3b8; white-space: nowrap; padding-top: 2px; }
 
-        /* ─── Map ─── */
         .map-wrap { flex: 1; position: relative; }
         #map { width: 100%; height: 100%; }
 
-        /* ─── Status Bar ─── */
         .status-bar {
             flex-shrink: 0;
             padding: 7px 16px;
@@ -318,7 +311,6 @@
 
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ─── Mobile ─── */
         @media (max-width: 700px) {
             .main { flex-direction: column; }
             .sidebar { width: 100%; min-width: unset; max-height: 50vh; }
@@ -339,11 +331,9 @@
 </header>
 
 <div class="main">
-    <!-- ─── Sidebar ─── -->
     <div class="sidebar">
         <div class="sidebar-scroll">
 
-            <!-- Depot -->
             <div class="section">
                 <div class="section-title">Başlangıç Noktası (Depo)</div>
                 <div class="depot-row">
@@ -354,7 +344,6 @@
                 </div>
             </div>
 
-            <!-- Delivery Addresses -->
             <div class="section">
                 <div class="section-title">
                     Teslimat Adresleri
@@ -373,7 +362,6 @@
                 </div>
             </div>
 
-            <!-- Optimize -->
             <button class="opt-btn" id="optimizeBtn" onclick="optimizeRoute()" disabled>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
@@ -382,18 +370,16 @@
                 Rotayı Optimize Et
             </button>
 
-        </div><!-- /sidebar-scroll -->
+        </div>
 
-        <!-- Result Panel (hidden until optimized) -->
         <div class="result-panel" id="resultPanel" style="display:none;">
             <div class="section-title" style="margin-bottom:10px;">Optimize Edilmiş Rota</div>
             <div class="stats-row" id="statsRow"></div>
             <div class="route-list" id="routeList"></div>
         </div>
 
-    </div><!-- /sidebar -->
+    </div>
 
-    <!-- ─── Map ─── -->
     <div class="map-wrap">
         <div id="map"></div>
     </div>
@@ -404,16 +390,9 @@
 </div>
 
 <script>
-/* ═══════════════════════════════════════════
-   STATE
-═══════════════════════════════════════════ */
-const addresses = [];  // { text, geocoded: {lat,lon,display} | null, error: string | null }
-
+const addresses = [];
 let map, routeLayer, markerLayer;
 
-/* ═══════════════════════════════════════════
-   MAP INIT
-═══════════════════════════════════════════ */
 function initMap() {
     map = L.map('map').setView([38.465, 27.175], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -423,22 +402,16 @@ function initMap() {
     markerLayer = L.layerGroup().addTo(map);
 }
 
-/* ═══════════════════════════════════════════
-   ADDRESS LIST UI
-═══════════════════════════════════════════ */
 function renderList() {
-    const el   = document.getElementById('addressList');
-    const cnt  = document.getElementById('addrCount');
-    const btn  = document.getElementById('optimizeBtn');
-
-    cnt.textContent  = addresses.length;
-    btn.disabled     = addresses.length < 2;
-
+    const el  = document.getElementById('addressList');
+    const cnt = document.getElementById('addrCount');
+    const btn = document.getElementById('optimizeBtn');
+    cnt.textContent = addresses.length;
+    btn.disabled    = addresses.length < 2;
     if (addresses.length === 0) {
         el.innerHTML = '<div class="empty-hint">Henüz adres eklenmedi</div>';
         return;
     }
-
     el.innerHTML = addresses.map((a, i) => {
         const cls = a.geocoded ? 'ok' : a.error ? 'err' : '';
         return `
@@ -457,7 +430,6 @@ function renderList() {
 function addAddress(text) {
     const inp = document.getElementById('newInput');
     const raw = (text !== undefined ? text : inp.value);
-    // support paste of multiple lines
     const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
     if (!lines.length) return;
     lines.forEach(l => addresses.push({ text: l, geocoded: null, error: null }));
@@ -476,10 +448,9 @@ function editAddr(idx, val) {
     addresses[idx].error    = null;
 }
 
-/* support paste of multiline text */
 document.getElementById('newInput').addEventListener('paste', e => {
     const txt = (e.clipboardData || window.clipboardData).getData('text');
-    if (!txt.includes('\n')) return; // single line → let browser handle
+    if (!txt.includes('\n')) return;
     e.preventDefault();
     addAddress(txt);
 });
@@ -488,13 +459,9 @@ document.getElementById('newInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') { e.preventDefault(); addAddress(); }
 });
 
-/* ═══════════════════════════════════════════
-   STATUS BAR
-═══════════════════════════════════════════ */
 function setStatus(msg, loading = false) {
     const bar = document.getElementById('statusBar');
     document.getElementById('statusMsg').textContent = msg;
-
     const sp = bar.querySelector('.spinner');
     if (loading && !sp) {
         const d = document.createElement('div');
@@ -505,9 +472,6 @@ function setStatus(msg, loading = false) {
     }
 }
 
-/* ═══════════════════════════════════════════
-   HELPERS
-═══════════════════════════════════════════ */
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 function esc(s) {
@@ -526,21 +490,14 @@ function fmtDist(m) {
     return m >= 1000 ? `${(m / 1000).toFixed(1)} km` : `${Math.round(m)} m`;
 }
 
-/* ═══════════════════════════════════════════
-   GEOCODING — Nominatim (ücretsiz)
-═══════════════════════════════════════════ */
 async function geocode(text) {
     const biased = /izmir|bayrakl/i.test(text)
         ? text
         : `${text}, Bayraklı, İzmir, Türkiye`;
-
     const hit = await nominatim(biased);
     if (hit) return hit;
-
-    // Retry without bias
     const hit2 = await nominatim(text);
     if (hit2) return hit2;
-
     throw new Error(`"${text}" konumu bulunamadı`);
 }
 
@@ -555,9 +512,6 @@ async function nominatim(q) {
     return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon), display: data[0].display_name };
 }
 
-/* ═══════════════════════════════════════════
-   OSRM — Distance Matrix
-═══════════════════════════════════════════ */
 async function getMatrix(coords) {
     const cstr = coords.map(c => `${c.lon},${c.lat}`).join(';');
     const url  = `https://router.project-osrm.org/table/v1/driving/${cstr}?annotations=duration,distance`;
@@ -568,9 +522,6 @@ async function getMatrix(coords) {
     return { durations: data.durations, distances: data.distances };
 }
 
-/* ═══════════════════════════════════════════
-   OSRM — Route Geometry
-═══════════════════════════════════════════ */
 async function getRouteGeometry(coords) {
     const cstr = coords.map(c => `${c.lon},${c.lat}`).join(';');
     const url  = `https://router.project-osrm.org/route/v1/driving/${cstr}?overview=full&geometries=geojson`;
@@ -581,15 +532,11 @@ async function getRouteGeometry(coords) {
     return data.routes[0];
 }
 
-/* ═══════════════════════════════════════════
-   TSP — Nearest Neighbor Heuristic
-═══════════════════════════════════════════ */
 function nearestNeighbor(matrix, start = 0) {
     const n       = matrix.length;
     const visited = new Array(n).fill(false);
     const route   = [start];
     visited[start] = true;
-
     for (let step = 1; step < n; step++) {
         const last = route[route.length - 1];
         let best = -1, bestVal = Infinity;
@@ -603,13 +550,9 @@ function nearestNeighbor(matrix, start = 0) {
         route.push(best);
         visited[best] = true;
     }
-
     return route;
 }
 
-/* ═══════════════════════════════════════════
-   MAIN — Optimize Route
-═══════════════════════════════════════════ */
 async function optimizeRoute() {
     const depotText = document.getElementById('depotInput').value.trim();
     if (!depotText) { alert('Depo adresi boş olamaz!'); return; }
@@ -619,7 +562,6 @@ async function optimizeRoute() {
     btn.disabled = true;
     document.getElementById('resultPanel').style.display = 'none';
 
-    // ── 1. Geocode depot
     setStatus('Depo adresi konuma dönüştürülüyor…', true);
     let depotCoord;
     try {
@@ -630,12 +572,11 @@ async function optimizeRoute() {
         return;
     }
 
-    // ── 2. Geocode delivery addresses (Nominatim 1 req/s rate limit)
     const allCoords = [depotCoord];
     let hasError = false;
 
     for (let i = 0; i < addresses.length; i++) {
-        await sleep(1100); // respect Nominatim rate limit
+        await sleep(1100);
         setStatus(`Adres ${i + 1}/${addresses.length} konuma dönüştürülüyor…`, true);
         try {
             const coord = await geocode(addresses[i].text);
@@ -651,12 +592,11 @@ async function optimizeRoute() {
     }
 
     if (hasError) {
-        setStatus('Bazı adresler bulunamadı — lütfen hataları düzeltin.', false);
+        setStatus('Bazı adresler bulunamadı — lütfen hataları düzetin.', false);
         btn.disabled = false;
         return;
     }
 
-    // ── 3. Distance matrix
     setStatus('Mesafe matrisi hesaplanıyor…', true);
     let matrix;
     try {
@@ -667,19 +607,16 @@ async function optimizeRoute() {
         return;
     }
 
-    // ── 4. TSP nearest neighbor (depot = index 0)
     setStatus('En kısa rota hesaplanıyor…', true);
     const order = nearestNeighbor(matrix.durations, 0);
 
-    // ── 5. Route geometry for map
     const orderedCoords = order.map(i => allCoords[i]);
     let osrmRoute = null;
     try {
         setStatus('Harita rotası çiziliyor…', true);
         osrmRoute = await getRouteGeometry(orderedCoords);
-    } catch (_) { /* non-critical */ }
+    } catch (_) {}
 
-    // ── 6. Totals
     let totalSec = 0, totalM = 0;
     for (let i = 0; i < order.length - 1; i++) {
         const f = order[i], t = order[i + 1];
@@ -687,7 +624,6 @@ async function optimizeRoute() {
         if (matrix.distances && matrix.distances[f][t]) totalM += matrix.distances[f][t];
     }
 
-    // ── 7. Draw map
     routeLayer.clearLayers();
     markerLayer.clearLayers();
 
@@ -712,21 +648,12 @@ async function optimizeRoute() {
         const label   = isDepot ? '⌂' : String(pos);
         const bg      = isDepot ? '#1d4ed8' : stopColors[(pos - 1) % stopColors.length];
         const addrTxt = isDepot ? depotText : addresses[origIdx - 1].text;
-
         const icon = L.divIcon({
             className: '',
-            html: `<div style="
-                background:${bg};color:white;
-                width:28px;height:28px;border-radius:50%;
-                display:flex;align-items:center;justify-content:center;
-                font-weight:700;font-size:${isDepot ? '14' : '12'}px;
-                border:2.5px solid white;
-                box-shadow:0 2px 6px rgba(0,0,0,0.35);
-                line-height:1;">${label}</div>`,
+            html: `<div style="background:${bg};color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:${isDepot ? '14' : '12'}px;border:2.5px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.35);line-height:1;">${label}</div>`,
             iconSize:   [28, 28],
             iconAnchor: [14, 14],
         });
-
         L.marker([coord.lat, coord.lon], { icon })
             .bindPopup(`<b>${isDepot ? 'Depo (Başlangıç)' : `Durak ${pos}`}</b><br><small>${addrTxt}</small>`)
             .addTo(markerLayer);
@@ -734,7 +661,6 @@ async function optimizeRoute() {
 
     map.fitBounds(orderedCoords.map(c => [c.lat, c.lon]), { padding: [40, 40] });
 
-    // ── 8. Result sidebar
     document.getElementById('statsRow').innerHTML = `
         <div class="stat-card">
             <div class="stat-value">${fmtDuration(totalSec)}</div>
@@ -765,14 +691,10 @@ async function optimizeRoute() {
 
     document.getElementById('routeList').innerHTML = rows;
     document.getElementById('resultPanel').style.display = 'block';
-
     setStatus(`Rota hazır — ${addresses.length} durak · ${fmtDist(totalM)} · ~${fmtDuration(totalSec)}`, false);
     btn.disabled = false;
 }
 
-/* ═══════════════════════════════════════════
-   BOOT
-═══════════════════════════════════════════ */
 initMap();
 renderList();
 </script>
