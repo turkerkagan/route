@@ -77,12 +77,55 @@
             font-size: 0.85rem;
             outline: none;
             color: #1e293b;
-            transition: border-color 0.15s;
+            transition: border-color 0.15s, border-radius 0.15s;
             background: white;
         }
         input[type="text"]:focus { border-color: #3b82f6; }
+        input[type="text"].ac-open {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            border-color: #3b82f6;
+        }
 
-        /* ─── Travel Mode Toggle ─── */
+        /* ─── Autocomplete dropdown ─── */
+        .ac-dropdown {
+            position: fixed;
+            background: white;
+            border: 1.5px solid #3b82f6;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.13);
+            z-index: 99999;
+            max-height: 230px;
+            overflow-y: auto;
+        }
+
+        .ac-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 9px 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #374151;
+            line-height: 1.4;
+            border-bottom: 1px solid #f1f5f9;
+            transition: background 0.1s;
+        }
+        .ac-item:last-child { border-bottom: none; }
+        .ac-item:hover, .ac-item.hi {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+        .ac-item:hover .ac-pin, .ac-item.hi .ac-pin { color: #3b82f6; }
+
+        .ac-pin {
+            width: 13px; height: 13px;
+            flex-shrink: 0; margin-top: 2px;
+            color: #cbd5e1;
+        }
+
+        /* ─── Travel Mode ─── */
         .mode-toggle {
             display: flex;
             gap: 8px;
@@ -102,12 +145,7 @@
             background: transparent;
             color: #64748b;
             transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
         }
-
         .mode-btn.active {
             background: white;
             color: #1d4ed8;
@@ -149,7 +187,7 @@
             color: white;
             font-size: 11px; font-weight: 700;
             display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; margin-top: 3px;
+            flex-shrink: 0; margin-top: 4px;
         }
 
         .addr-body { flex: 1; min-width: 0; }
@@ -157,7 +195,7 @@
         .addr-input {
             border: none; background: transparent;
             font-size: 0.85rem; width: 100%;
-            padding: 0; color: #1e293b; outline: none;
+            padding: 2px 0; color: #1e293b; outline: none;
         }
 
         .addr-error { font-size: 0.72rem; color: #ef4444; margin-top: 2px; }
@@ -219,38 +257,22 @@
         .stat-label { font-size: 0.68rem; color: #64748b; margin-top: 1px; }
 
         /* ─── External Map Buttons ─── */
-        .map-open-btns {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
+        .map-open-btns { display: flex; gap: 8px; margin-bottom: 12px; }
 
         .map-open-btn {
             flex: 1;
             padding: 9px 8px;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            border: none; border-radius: 8px;
+            font-size: 0.8rem; font-weight: 600;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
             transition: opacity 0.15s;
         }
         .map-open-btn:hover { opacity: 0.85; }
+        .btn-google { background: #4285F4; color: white; }
+        .btn-apple  { background: #1c1c1e; color: white; }
 
-        .btn-google {
-            background: #4285F4;
-            color: white;
-        }
-
-        .btn-apple {
-            background: #1c1c1e;
-            color: white;
-        }
-
+        /* ─── Route List ─── */
         .route-list { display: flex; flex-direction: column; gap: 3px; }
 
         .route-item {
@@ -263,8 +285,7 @@
         .rnum {
             width: 22px; height: 22px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 11px; font-weight: 700;
-            flex-shrink: 0; color: white;
+            font-size: 11px; font-weight: 700; flex-shrink: 0; color: white;
         }
         .rnum.start { background: #1d4ed8; }
         .rnum.stop  { background: #7c3aed; }
@@ -278,21 +299,17 @@
 
         /* ─── Status Bar ─── */
         .status-bar {
-            flex-shrink: 0;
-            padding: 7px 16px;
-            background: #f8fafc;
-            border-top: 1px solid #e2e8f0;
+            flex-shrink: 0; padding: 7px 16px;
+            background: #f8fafc; border-top: 1px solid #e2e8f0;
             font-size: 0.78rem; color: #64748b;
             display: flex; align-items: center; gap: 8px;
         }
 
         .spinner {
             width: 13px; height: 13px;
-            border: 2px solid #e2e8f0;
-            border-top-color: #3b82f6;
+            border: 2px solid #e2e8f0; border-top-color: #3b82f6;
             border-radius: 50%;
-            animation: spin 0.75s linear infinite;
-            flex-shrink: 0;
+            animation: spin 0.75s linear infinite; flex-shrink: 0;
         }
 
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -323,7 +340,7 @@
             <div class="section">
                 <div class="section-title">Başlangıç Noktası</div>
                 <div class="depot-row">
-                    <div class="depot-icon" title="Başlangıç">⌂</div>
+                    <div class="depot-icon">⌂</div>
                     <input type="text" id="depotInput" placeholder="Başlangıç adresi girin..." />
                 </div>
             </div>
@@ -332,20 +349,14 @@
             <div class="section">
                 <div class="section-title">Ulaşım Modu</div>
                 <div class="mode-toggle">
-                    <button class="mode-btn active" id="btnDriving" onclick="setMode('driving')">
-                        🚗 Araba
-                    </button>
-                    <button class="mode-btn" id="btnFoot" onclick="setMode('foot')">
-                        🚶 Yaya
-                    </button>
+                    <button class="mode-btn active" id="btnDriving" onclick="setMode('driving')">🚗 Araba</button>
+                    <button class="mode-btn" id="btnFoot" onclick="setMode('foot')">🚶 Yaya</button>
                 </div>
             </div>
 
             <!-- Route Adresleri -->
             <div class="section">
-                <div class="section-title">
-                    Route Adresleri (<span id="addrCount">0</span>)
-                </div>
+                <div class="section-title">Route Adresleri (<span id="addrCount">0</span>)</div>
                 <div class="address-list" id="addressList">
                     <div class="empty-hint">Henüz adres eklenmedi</div>
                 </div>
@@ -353,12 +364,10 @@
                     <input type="text" id="newInput" placeholder="Adres ekle, Enter'a bas..." />
                     <button class="btn-icon" onclick="addAddress()" title="Ekle">+</button>
                 </div>
-                <div class="hint-text">
-                    Birden fazla satır yapıştırabilirsiniz — her satır ayrı adres olarak eklenir.
-                </div>
+                <div class="hint-text">Birden fazla satır yapıştırabilirsiniz — her satır ayrı adres.</div>
             </div>
 
-            <!-- Optimize Button -->
+            <!-- Optimize -->
             <button class="opt-btn" id="optimizeBtn" onclick="optimizeRoute()" disabled>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
@@ -369,30 +378,25 @@
 
         </div>
 
-        <!-- Result Panel -->
+        <!-- Sonuç Paneli -->
         <div class="result-panel" id="resultPanel" style="display:none;">
             <div class="section-title" style="margin-bottom:10px;">Optimize Edilmiş Rota</div>
             <div class="stats-row" id="statsRow"></div>
-
-            <!-- Haritada Aç Butonları -->
             <div class="map-open-btns">
                 <button class="map-open-btn btn-google" onclick="openGoogleMaps()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                     Google Maps
                 </button>
                 <button class="map-open-btn btn-apple" onclick="openAppleMaps()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                     Apple Maps
                 </button>
             </div>
-
             <div class="route-list" id="routeList"></div>
         </div>
     </div>
 
-    <div class="map-wrap">
-        <div id="map"></div>
-    </div>
+    <div class="map-wrap"><div id="map"></div></div>
 </div>
 
 <div class="status-bar" id="statusBar">
@@ -400,17 +404,18 @@
 </div>
 
 <script>
-/* ═══════════════════════════════════
+/* ═══════════════════════════════════════
    STATE
-═══════════════════════════════════ */
-const addresses = [];
+═══════════════════════════════════════ */
+const addresses = []; // { text, geocoded:{lat,lon,display}|null, error:string|null }
 let travelMode  = 'driving';
-let lastRoute   = null; // { orderedCoords, mode }
+let lastRoute   = null;
+let depotCache  = null; // { text, coord } — depot pre-geocoded via autocomplete
 let map, routeLayer, markerLayer;
 
-/* ═══════════════════════════════════
+/* ═══════════════════════════════════════
    MAP
-═══════════════════════════════════ */
+═══════════════════════════════════════ */
 function initMap() {
     map = L.map('map').setView([39.9, 32.8], 6);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -420,18 +425,175 @@ function initMap() {
     markerLayer = L.layerGroup().addTo(map);
 }
 
-/* ═══════════════════════════════════
+/* ═══════════════════════════════════════
    TRAVEL MODE
-═══════════════════════════════════ */
+═══════════════════════════════════════ */
 function setMode(mode) {
     travelMode = mode;
     document.getElementById('btnDriving').classList.toggle('active', mode === 'driving');
     document.getElementById('btnFoot').classList.toggle('active', mode === 'foot');
 }
 
-/* ═══════════════════════════════════
+/* ═══════════════════════════════════════
+   AUTOCOMPLETE
+═══════════════════════════════════════ */
+// Single shared dropdown appended to body (avoids overflow clipping)
+const acEl = (() => {
+    const el = document.createElement('div');
+    el.className = 'ac-dropdown';
+    el.style.display = 'none';
+    document.body.appendChild(el);
+    return el;
+})();
+
+let acItems   = [];
+let acHi      = -1;
+let acInput   = null;
+let acOnSel   = null;
+let acTimer   = null;
+
+function acHide() {
+    acEl.style.display = 'none';
+    acHi = -1;
+    if (acInput) acInput.classList.remove('ac-open');
+}
+
+function acPosition() {
+    if (!acInput) return;
+    const r = acInput.getBoundingClientRect();
+    acEl.style.top   = `${r.bottom}px`;
+    acEl.style.left  = `${r.left}px`;
+    acEl.style.width = `${r.width}px`;
+}
+
+function acHighlight(n) {
+    acHi = n;
+    acEl.querySelectorAll('.ac-item').forEach((el, i) =>
+        el.classList.toggle('hi', i === acHi)
+    );
+}
+
+function acPick(i) {
+    if (i < 0 || i >= acItems.length) return;
+    const it = acItems[i];
+    if (acInput) {
+        acInput.value = it.display_name;
+        acInput.classList.remove('ac-open');
+    }
+    if (acOnSel) acOnSel(it);
+    acHide();
+}
+
+function acShow(results, inp) {
+    if (acInput !== inp) return; // stale response
+    acItems = results;
+    acHi    = -1;
+    if (!results.length) { acHide(); return; }
+
+    acEl.innerHTML = results.map((r, i) => `
+        <div class="ac-item" data-i="${i}">
+            <svg class="ac-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span>${esc(r.display_name)}</span>
+        </div>`
+    ).join('');
+
+    acEl.querySelectorAll('.ac-item').forEach(el => {
+        el.addEventListener('mouseover', () => acHighlight(parseInt(el.dataset.i)));
+        el.addEventListener('mousedown', e => {
+            e.preventDefault(); // prevent blur before pick
+            acPick(parseInt(el.dataset.i));
+        });
+    });
+
+    acPosition();
+    acEl.style.display = 'block';
+    if (acInput) acInput.classList.add('ac-open');
+}
+
+async function acFetch(q) {
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=5`;
+    try {
+        const res = await fetch(url, {
+            headers: { 'Accept-Language': 'tr', 'User-Agent': 'RouteOptimizer/1.0' }
+        });
+        return await res.json();
+    } catch { return []; }
+}
+
+function makeAC(input, onSelect) {
+    input.addEventListener('focus', () => {
+        acInput = input;
+        acOnSel = onSelect;
+    });
+
+    input.addEventListener('input', () => {
+        acInput = input;
+        acOnSel = onSelect;
+        clearTimeout(acTimer);
+        const q = input.value.trim();
+        if (q.length < 3) { acHide(); return; }
+        acTimer = setTimeout(async () => {
+            const results = await acFetch(q);
+            acShow(results, input); // acShow checks if still same input
+        }, 380);
+    });
+
+    input.addEventListener('keydown', e => {
+        if (acEl.style.display === 'none' || acInput !== input) return;
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            acHighlight(Math.min(acHi + 1, acItems.length - 1));
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            acHighlight(Math.max(acHi - 1, 0));
+        } else if (e.key === 'Enter' && acHi >= 0) {
+            e.preventDefault();
+            acPick(acHi);
+        } else if (e.key === 'Escape') {
+            acHide();
+        }
+    });
+
+    input.addEventListener('blur', () => {
+        setTimeout(() => {
+            if (acInput === input) acHide();
+        }, 160);
+    });
+}
+
+// Close on outside click or scroll
+document.addEventListener('click', e => {
+    if (!acEl.contains(e.target)) acHide();
+});
+document.querySelector('.sidebar-scroll') &&
+    document.querySelector('.sidebar-scroll').addEventListener('scroll', acHide);
+window.addEventListener('resize', acHide);
+
+// Attach autocomplete to each addr-input after renderList
+function attachListACs() {
+    document.querySelectorAll('.addr-input[data-idx]').forEach(input => {
+        const idx = parseInt(input.dataset.idx);
+        makeAC(input, result => {
+            addresses[idx].text     = result.display_name;
+            addresses[idx].geocoded = {
+                lat: parseFloat(result.lat),
+                lon: parseFloat(result.lon),
+                display: result.display_name
+            };
+            addresses[idx].error = null;
+            // Mark item as pre-geocoded (green border)
+            input.closest('.addr-item')?.classList.add('ok');
+            input.closest('.addr-item')?.classList.remove('err');
+        });
+    });
+}
+
+/* ═══════════════════════════════════════
    ADDRESS LIST
-═══════════════════════════════════ */
+═══════════════════════════════════════ */
 function renderList() {
     const el  = document.getElementById('addressList');
     const cnt = document.getElementById('addrCount');
@@ -450,22 +612,26 @@ function renderList() {
         <div class="addr-item ${cls}">
             <div class="addr-badge">${i + 1}</div>
             <div class="addr-body">
-                <input class="addr-input" value="${esc(a.text)}"
+                <input class="addr-input" data-idx="${i}" value="${esc(a.text)}"
                        onchange="editAddr(${i}, this.value)" />
                 ${a.error ? `<div class="addr-error">⚠ ${esc(a.error)}</div>` : ''}
             </div>
-            <button class="rm-btn" onclick="removeAddr(${i})" title="Kaldır">×</button>
+            <button class="rm-btn" onclick="removeAddr(${i})">×</button>
         </div>`;
     }).join('');
+
+    attachListACs();
 }
 
 function addAddress(text) {
     const inp   = document.getElementById('newInput');
     const raw   = text !== undefined ? text : inp.value;
+    // support multiline paste
     const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
     if (!lines.length) return;
     lines.forEach(l => addresses.push({ text: l, geocoded: null, error: null }));
     inp.value = '';
+    acHide();
     renderList();
 }
 
@@ -475,9 +641,13 @@ function removeAddr(idx) {
 }
 
 function editAddr(idx, val) {
-    addresses[idx].text     = val;
-    addresses[idx].geocoded = null;
-    addresses[idx].error    = null;
+    // Only clear geocode if text actually changed (autocomplete sets value programmatically
+    // without triggering onchange, so geocoded remains intact after autocomplete pick)
+    if (addresses[idx].text !== val) {
+        addresses[idx].geocoded = null;
+        addresses[idx].error    = null;
+    }
+    addresses[idx].text = val;
 }
 
 document.getElementById('newInput').addEventListener('paste', e => {
@@ -488,12 +658,15 @@ document.getElementById('newInput').addEventListener('paste', e => {
 });
 
 document.getElementById('newInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') { e.preventDefault(); addAddress(); }
+    if (e.key === 'Enter' && acHi < 0) { // only add if no AC item highlighted
+        e.preventDefault();
+        addAddress();
+    }
 });
 
-/* ═══════════════════════════════════
+/* ═══════════════════════════════════════
    STATUS
-═══════════════════════════════════ */
+═══════════════════════════════════════ */
 function setStatus(msg, loading = false) {
     const bar = document.getElementById('statusBar');
     document.getElementById('statusMsg').textContent = msg;
@@ -507,9 +680,9 @@ function setStatus(msg, loading = false) {
     }
 }
 
-/* ═══════════════════════════════════
+/* ═══════════════════════════════════════
    HELPERS
-═══════════════════════════════════ */
+═══════════════════════════════════════ */
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 function esc(s) {
@@ -528,29 +701,23 @@ function fmtDist(m) {
     return m >= 1000 ? `${(m / 1000).toFixed(1)} km` : `${Math.round(m)} m`;
 }
 
-/* ═══════════════════════════════════
+/* ═══════════════════════════════════════
    GEOCODING — Nominatim
-═══════════════════════════════════ */
+═══════════════════════════════════════ */
 async function geocode(text) {
-    const res = await nominatim(text);
-    if (res) return res;
-    throw new Error(`"${text}" konumu bulunamadı`);
-}
-
-async function nominatim(q) {
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1`;
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(text)}&format=json&limit=1`;
     const res  = await fetch(url, {
         headers: { 'Accept-Language': 'tr', 'User-Agent': 'RouteOptimizer/1.0' }
     });
     if (!res.ok) throw new Error('Geocoding servisi yanıt vermedi');
     const data = await res.json();
-    if (!data.length) return null;
+    if (!data.length) throw new Error(`"${text}" konumu bulunamadı`);
     return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon), display: data[0].display_name };
 }
 
-/* ═══════════════════════════════════
+/* ═══════════════════════════════════════
    OSRM — Distance Matrix
-═══════════════════════════════════ */
+═══════════════════════════════════════ */
 async function getMatrix(coords, mode) {
     const cstr = coords.map(c => `${c.lon},${c.lat}`).join(';');
     const url  = `https://router.project-osrm.org/table/v1/${mode}/${cstr}?annotations=duration,distance`;
@@ -561,9 +728,9 @@ async function getMatrix(coords, mode) {
     return { durations: data.durations, distances: data.distances };
 }
 
-/* ═══════════════════════════════════
+/* ═══════════════════════════════════════
    OSRM — Route Geometry
-═══════════════════════════════════ */
+═══════════════════════════════════════ */
 async function getRouteGeometry(coords, mode) {
     const cstr = coords.map(c => `${c.lon},${c.lat}`).join(';');
     const url  = `https://router.project-osrm.org/route/v1/${mode}/${cstr}?overview=full&geometries=geojson`;
@@ -574,11 +741,11 @@ async function getRouteGeometry(coords, mode) {
     return data.routes[0];
 }
 
-/* ═══════════════════════════════════
+/* ═══════════════════════════════════════
    TSP — Nearest Neighbor
-═══════════════════════════════════ */
+═══════════════════════════════════════ */
 function nearestNeighbor(matrix, start = 0) {
-    const n       = matrix.length;
+    const n = matrix.length;
     const visited = new Array(n).fill(false);
     const route   = [start];
     visited[start] = true;
@@ -587,8 +754,7 @@ function nearestNeighbor(matrix, start = 0) {
         let best = -1, bestVal = Infinity;
         for (let j = 0; j < n; j++) {
             if (!visited[j] && matrix[last][j] != null && matrix[last][j] < bestVal) {
-                bestVal = matrix[last][j];
-                best    = j;
+                bestVal = matrix[last][j]; best = j;
             }
         }
         if (best === -1) break;
@@ -598,17 +764,16 @@ function nearestNeighbor(matrix, start = 0) {
     return route;
 }
 
-/* ═══════════════════════════════════
+/* ═══════════════════════════════════════
    EXTERNAL MAPS
-═══════════════════════════════════ */
+═══════════════════════════════════════ */
 function openGoogleMaps() {
     if (!lastRoute) return;
     const { orderedCoords, mode } = lastRoute;
     const travelmode = mode === 'foot' ? 'walking' : 'driving';
-    const origin     = `${orderedCoords[0].lat},${orderedCoords[0].lon}`;
-    const dest       = `${orderedCoords[orderedCoords.length - 1].lat},${orderedCoords[orderedCoords.length - 1].lon}`;
-    const wps        = orderedCoords.slice(1, -1).map(c => `${c.lat},${c.lon}`).join('|');
-
+    const origin = `${orderedCoords[0].lat},${orderedCoords[0].lon}`;
+    const dest   = `${orderedCoords[orderedCoords.length-1].lat},${orderedCoords[orderedCoords.length-1].lon}`;
+    const wps    = orderedCoords.slice(1,-1).map(c=>`${c.lat},${c.lon}`).join('|');
     let url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${dest}&travelmode=${travelmode}`;
     if (wps) url += `&waypoints=${encodeURIComponent(wps)}`;
     window.open(url, '_blank');
@@ -619,18 +784,13 @@ function openAppleMaps() {
     const { orderedCoords, mode } = lastRoute;
     const dirflg = mode === 'foot' ? 'w' : 'd';
     const saddr  = `${orderedCoords[0].lat},${orderedCoords[0].lon}`;
-
-    // Apple Maps supports chained destinations via "to:" syntax
-    const dparts = orderedCoords.slice(1).map(c => `${c.lat},${c.lon}`);
-    const daddr  = dparts.join('+to:');
-
-    const url = `https://maps.apple.com/?saddr=${saddr}&daddr=${encodeURIComponent(daddr)}&dirflg=${dirflg}`;
-    window.open(url, '_blank');
+    const daddr  = orderedCoords.slice(1).map(c=>`${c.lat},${c.lon}`).join('+to:');
+    window.open(`https://maps.apple.com/?saddr=${saddr}&daddr=${encodeURIComponent(daddr)}&dirflg=${dirflg}`, '_blank');
 }
 
-/* ═══════════════════════════════════
+/* ═══════════════════════════════════════
    MAIN — OPTIMIZE
-═══════════════════════════════════ */
+═══════════════════════════════════════ */
 async function optimizeRoute() {
     const depotText = document.getElementById('depotInput').value.trim();
     if (!depotText) { alert('Başlangıç noktası boş olamaz!'); return; }
@@ -642,23 +802,35 @@ async function optimizeRoute() {
     document.getElementById('resultPanel').style.display = 'none';
     lastRoute = null;
 
-    // 1. Başlangıç noktasını geocode et
-    setStatus('Başlangıç noktası konuma dönüştürülüyor…', true);
+    // 1. Depot geocode (use cache if autocomplete pre-geocoded it)
     let depotCoord;
-    try {
-        depotCoord = await geocode(depotText);
-    } catch (e) {
-        setStatus(`Başlangıç noktası bulunamadı: ${e.message}`, false);
-        btn.disabled = false;
-        return;
+    if (depotCache && depotCache.text === depotText) {
+        depotCoord = depotCache.coord;
+    } else {
+        setStatus('Başlangıç noktası konuma dönüştürülüyor…', true);
+        try {
+            depotCoord = await geocode(depotText);
+            depotCache = { text: depotText, coord: depotCoord };
+        } catch (e) {
+            setStatus(`Başlangıç noktası bulunamadı: ${e.message}`, false);
+            btn.disabled = false;
+            return;
+        }
     }
 
-    // 2. Route adreslerini geocode et
+    // 2. Route adresleri geocode et (önbellekte olanları atla)
     const allCoords = [depotCoord];
     let hasError = false;
+    let needDelay = false;
 
     for (let i = 0; i < addresses.length; i++) {
-        await sleep(1100);
+        if (addresses[i].geocoded) {
+            // Autocomplete ile zaten geocode edilmiş, tekrar istek atmaya gerek yok
+            allCoords.push(addresses[i].geocoded);
+            continue;
+        }
+        if (needDelay) await sleep(1100); // Nominatim rate limit
+        needDelay = true;
         setStatus(`Adres ${i + 1}/${addresses.length} konuma dönüştürülüyor…`, true);
         try {
             const coord = await geocode(addresses[i].text);
@@ -710,7 +882,7 @@ async function optimizeRoute() {
         if (matrix.distances && matrix.distances[f][t]) totalM   += matrix.distances[f][t];
     }
 
-    // 7. Harita çiz
+    // 7. Harita
     routeLayer.clearLayers();
     markerLayer.clearLayers();
 
@@ -738,7 +910,7 @@ async function optimizeRoute() {
 
         const icon = L.divIcon({
             className: '',
-            html: `<div style="background:${bg};color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:${isStart ? '14' : '12'}px;border:2.5px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.35);line-height:1;">${label}</div>`,
+            html: `<div style="background:${bg};color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:${isStart?'14':'12'}px;border:2.5px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.35);line-height:1;">${label}</div>`,
             iconSize:   [28, 28],
             iconAnchor: [14, 14],
         });
@@ -752,47 +924,85 @@ async function optimizeRoute() {
 
     // 8. Sonuç paneli
     document.getElementById('statsRow').innerHTML = `
-        <div class="stat-card">
-            <div class="stat-value">${fmtDuration(totalSec)}</div>
-            <div class="stat-label">Toplam Süre</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value">${fmtDist(totalM)}</div>
-            <div class="stat-label">Toplam Mesafe</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value">${addresses.length}</div>
-            <div class="stat-label">Durak Sayısı</div>
-        </div>`;
+        <div class="stat-card"><div class="stat-value">${fmtDuration(totalSec)}</div><div class="stat-label">Toplam Süre</div></div>
+        <div class="stat-card"><div class="stat-value">${fmtDist(totalM)}</div><div class="stat-label">Toplam Mesafe</div></div>
+        <div class="stat-card"><div class="stat-value">${addresses.length}</div><div class="stat-label">Durak Sayısı</div></div>`;
 
-    const rows = order.map((origIdx, pos) => {
+    document.getElementById('routeList').innerHTML = order.map((origIdx, pos) => {
         const isStart = origIdx === 0;
         const addrTxt = isStart ? depotText : addresses[origIdx - 1].text;
         const nextSeg = pos < order.length - 1
-            ? `→ ${fmtDuration(matrix.durations[order[pos]][order[pos + 1]] || 0)}`
+            ? `→ ${fmtDuration(matrix.durations[order[pos]][order[pos+1]] || 0)}`
             : '';
-        return `
-        <div class="route-item">
-            <div class="rnum ${isStart ? 'start' : 'stop'}">${isStart ? '⌂' : pos}</div>
+        return `<div class="route-item">
+            <div class="rnum ${isStart?'start':'stop'}">${isStart?'⌂':pos}</div>
             <div class="raddr">${esc(addrTxt)}</div>
             <div class="rdur">${nextSeg}</div>
         </div>`;
     }).join('');
 
-    document.getElementById('routeList').innerHTML = rows;
     document.getElementById('resultPanel').style.display = 'block';
-
     lastRoute = { orderedCoords, mode };
-
     setStatus(`Rota hazır — ${addresses.length} durak · ${fmtDist(totalM)} · ~${fmtDuration(totalSec)}`, false);
     btn.disabled = false;
 }
 
-/* ═══════════════════════════════════
+/* ═══════════════════════════════════════
    BOOT
-═══════════════════════════════════ */
+═══════════════════════════════════════ */
 initMap();
 renderList();
+
+// Depot autocomplete
+makeAC(document.getElementById('depotInput'), result => {
+    depotCache = {
+        text:  result.display_name,
+        coord: { lat: parseFloat(result.lat), lon: parseFloat(result.lon), display: result.display_name }
+    };
+    document.getElementById('depotInput').value = result.display_name;
+});
+
+// Depot: clear cache if user types manually
+document.getElementById('depotInput').addEventListener('input', () => {
+    if (depotCache && document.getElementById('depotInput').value !== depotCache.text) {
+        depotCache = null;
+    }
+});
+
+// newInput autocomplete — on select, pre-geocode the address
+let newAcCache = null;
+makeAC(document.getElementById('newInput'), result => {
+    newAcCache = {
+        text:  result.display_name,
+        coord: { lat: parseFloat(result.lat), lon: parseFloat(result.lon), display: result.display_name }
+    };
+    document.getElementById('newInput').value = result.display_name;
+});
+
+// Override addAddress to use pre-geocoded coord when available
+const _addAddress = addAddress;
+window.addAddress = function(text) {
+    const inp = document.getElementById('newInput');
+    const raw = text !== undefined ? text : inp.value;
+    if (!raw.includes('\n')) {
+        const val = raw.trim();
+        if (!val) return;
+        const geo = (newAcCache && newAcCache.text === val) ? newAcCache.coord : null;
+        addresses.push({ text: val, geocoded: geo, error: null });
+        inp.value = '';
+        newAcCache = null;
+        acHide();
+        renderList();
+        return;
+    }
+    // multiline paste — no pre-geocoding available
+    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+    lines.forEach(l => addresses.push({ text: l, geocoded: null, error: null }));
+    inp.value = '';
+    newAcCache = null;
+    acHide();
+    renderList();
+};
 </script>
 </body>
 </html>
