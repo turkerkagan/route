@@ -417,7 +417,7 @@ let map, routeLayer, markerLayer;
    MAP
 ═══════════════════════════════════════ */
 function initMap() {
-    map = L.map('map').setView([39.9, 32.8], 6);
+    map = L.map('map').setView([38.42, 27.14], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
@@ -514,7 +514,7 @@ function acShow(results, inp) {
 }
 
 async function acFetch(q) {
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=5`;
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=5&viewbox=26.5,38.8,27.6,38.1&bounded=0`;
     try {
         const res = await fetch(url, {
             headers: { 'Accept-Language': 'tr', 'User-Agent': 'RouteOptimizer/1.0' }
@@ -705,7 +705,8 @@ function fmtDist(m) {
    GEOCODING — Nominatim
 ═══════════════════════════════════════ */
 async function geocode(text) {
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(text)}&format=json&limit=1`;
+    const q = /izmir/i.test(text) ? text : `${text}, İzmir`;
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1&viewbox=26.5,38.8,27.6,38.1&bounded=0`;
     const res  = await fetch(url, {
         headers: { 'Accept-Language': 'tr', 'User-Agent': 'RouteOptimizer/1.0' }
     });
