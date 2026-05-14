@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kurye Rota Optimizasyonu</title>
+    <title>Route Optimizasyon</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
@@ -32,19 +32,8 @@
         }
 
         header h1 { font-size: 1.1rem; font-weight: 600; }
-        header .badge {
-            margin-left: auto;
-            background: rgba(255,255,255,0.15);
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-        }
 
-        .main {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
+        .main { display: flex; flex: 1; overflow: hidden; }
 
         .sidebar {
             width: 370px;
@@ -57,11 +46,7 @@
             z-index: 5;
         }
 
-        .sidebar-scroll {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
-        }
+        .sidebar-scroll { flex: 1; overflow-y: auto; padding: 16px; }
 
         .section { margin-bottom: 18px; }
 
@@ -74,23 +59,14 @@
             margin-bottom: 8px;
         }
 
-        .depot-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .depot-row { display: flex; align-items: center; gap: 8px; }
 
         .depot-icon {
-            width: 30px;
-            height: 30px;
+            width: 30px; height: 30px;
             background: #1d4ed8;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 15px;
-            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 15px; flex-shrink: 0;
         }
 
         input[type="text"] {
@@ -104,9 +80,38 @@
             transition: border-color 0.15s;
             background: white;
         }
-
         input[type="text"]:focus { border-color: #3b82f6; }
-        input[type="text"].has-error { border-color: #f87171 !important; }
+
+        .mode-toggle {
+            display: flex;
+            gap: 8px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 7px 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: transparent;
+            color: #64748b;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .mode-btn.active {
+            background: white;
+            color: #1d4ed8;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+        }
 
         .address-list {
             display: flex;
@@ -132,61 +137,38 @@
             padding: 7px 8px;
             transition: border-color 0.2s;
         }
-
         .addr-item.ok  { border-color: #86efac; background: #f0fdf4; }
         .addr-item.err { border-color: #fca5a5; background: #fff5f5; }
 
         .addr-badge {
-            width: 22px;
-            height: 22px;
+            width: 22px; height: 22px;
             border-radius: 50%;
             background: #94a3b8;
             color: white;
-            font-size: 11px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            margin-top: 3px;
+            font-size: 11px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; margin-top: 3px;
         }
 
         .addr-body { flex: 1; min-width: 0; }
 
         .addr-input {
-            border: none;
-            background: transparent;
-            font-size: 0.85rem;
-            width: 100%;
-            padding: 0;
-            color: #1e293b;
-            outline: none;
+            border: none; background: transparent;
+            font-size: 0.85rem; width: 100%;
+            padding: 0; color: #1e293b; outline: none;
         }
 
-        .addr-error {
-            font-size: 0.72rem;
-            color: #ef4444;
-            margin-top: 2px;
-        }
+        .addr-error { font-size: 0.72rem; color: #ef4444; margin-top: 2px; }
 
         .rm-btn {
-            background: none;
-            border: none;
-            color: #cbd5e1;
-            cursor: pointer;
-            font-size: 18px;
-            line-height: 1;
-            padding: 0 2px;
-            transition: color 0.15s;
-            margin-top: 1px;
+            background: none; border: none;
+            color: #cbd5e1; cursor: pointer;
+            font-size: 18px; line-height: 1;
+            padding: 0 2px; transition: color 0.15s; margin-top: 1px;
         }
         .rm-btn:hover { color: #f87171; }
 
-        .add-row {
-            display: flex;
-            gap: 8px;
-        }
-
+        .add-row { display: flex; gap: 8px; }
         .add-row input { flex: 1; }
 
         .btn-icon {
@@ -194,34 +176,21 @@
             background: #f1f5f9;
             border: 1.5px solid #e2e8f0;
             border-radius: 7px;
-            cursor: pointer;
-            font-size: 18px;
-            line-height: 1;
-            color: #475569;
+            cursor: pointer; font-size: 18px;
+            line-height: 1; color: #475569;
             transition: all 0.15s;
         }
         .btn-icon:hover { background: #e2e8f0; color: #1e293b; }
 
-        .hint-text {
-            font-size: 0.72rem;
-            color: #94a3b8;
-            margin-top: 5px;
-        }
+        .hint-text { font-size: 0.72rem; color: #94a3b8; margin-top: 5px; }
 
         .opt-btn {
-            width: 100%;
-            padding: 12px;
-            background: #16a34a;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 600;
+            width: 100%; padding: 12px;
+            background: #16a34a; color: white;
+            border: none; border-radius: 8px;
+            font-size: 0.95rem; font-weight: 600;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
             transition: background 0.2s, opacity 0.2s;
         }
         .opt-btn:hover:not(:disabled) { background: #15803d; }
@@ -230,55 +199,61 @@
         .result-panel {
             border-top: 1px solid #e2e8f0;
             flex-shrink: 0;
-            max-height: 45vh;
+            max-height: 50vh;
             overflow-y: auto;
             padding: 14px 16px;
             background: #fafafa;
         }
 
-        .stats-row {
+        .stats-row { display: flex; gap: 8px; margin-bottom: 12px; }
+
+        .stat-card {
+            flex: 1; background: #eff6ff;
+            border-radius: 8px; padding: 8px 10px; text-align: center;
+        }
+        .stat-value { font-size: 1rem; font-weight: 700; color: #1d4ed8; }
+        .stat-label { font-size: 0.68rem; color: #64748b; margin-top: 1px; }
+
+        .map-open-btns {
             display: flex;
             gap: 8px;
             margin-bottom: 12px;
         }
 
-        .stat-card {
+        .map-open-btn {
             flex: 1;
-            background: #eff6ff;
+            padding: 9px 8px;
+            border: none;
             border-radius: 8px;
-            padding: 8px 10px;
-            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: opacity 0.15s;
         }
-        .stat-value { font-size: 1rem; font-weight: 700; color: #1d4ed8; }
-        .stat-label { font-size: 0.68rem; color: #64748b; margin-top: 1px; }
+        .map-open-btn:hover { opacity: 0.85; }
+        .btn-google { background: #4285F4; color: white; }
+        .btn-apple  { background: #1c1c1e; color: white; }
 
         .route-list { display: flex; flex-direction: column; gap: 3px; }
 
         .route-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            padding: 7px 8px;
-            border-radius: 6px;
+            display: flex; align-items: flex-start;
+            gap: 8px; padding: 7px 8px; border-radius: 6px;
         }
-
         .route-item:nth-child(odd)  { background: #f1f5f9; }
         .route-item:nth-child(even) { background: white; }
 
         .rnum {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 700;
-            flex-shrink: 0;
-            color: white;
+            width: 22px; height: 22px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700;
+            flex-shrink: 0; color: white;
         }
-
-        .rnum.depot { background: #1d4ed8; }
+        .rnum.start { background: #1d4ed8; }
         .rnum.stop  { background: #7c3aed; }
 
         .raddr { flex: 1; font-size: 0.8rem; color: #374151; line-height: 1.4; }
@@ -292,16 +267,12 @@
             padding: 7px 16px;
             background: #f8fafc;
             border-top: 1px solid #e2e8f0;
-            font-size: 0.78rem;
-            color: #64748b;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 0.78rem; color: #64748b;
+            display: flex; align-items: center; gap: 8px;
         }
 
         .spinner {
-            width: 13px;
-            height: 13px;
+            width: 13px; height: 13px;
             border: 2px solid #e2e8f0;
             border-top-color: #3b82f6;
             border-radius: 50%;
@@ -313,8 +284,8 @@
 
         @media (max-width: 700px) {
             .main { flex-direction: column; }
-            .sidebar { width: 100%; min-width: unset; max-height: 50vh; }
-            .map-wrap { min-height: 50vh; }
+            .sidebar { width: 100%; min-width: unset; max-height: 55vh; }
+            .map-wrap { min-height: 45vh; }
             .result-panel { max-height: 40vh; }
         }
     </style>
@@ -323,11 +294,10 @@
 
 <header>
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <polyline points="12 6 12 12 16 14"/>
+        <path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0"/>
+        <path d="M12 8l-4 4 4 4M8 12h8"/>
     </svg>
-    <h1>Kurye Rota Optimizasyonu</h1>
-    <span class="badge">Bayraklı / İzmir</span>
+    <h1>Route Optimizasyon</h1>
 </header>
 
 <div class="main">
@@ -335,31 +305,31 @@
         <div class="sidebar-scroll">
 
             <div class="section">
-                <div class="section-title">Başlangıç Noktası (Depo)</div>
+                <div class="section-title">Başlangıç Noktası</div>
                 <div class="depot-row">
-                    <div class="depot-icon" title="Depo">⌂</div>
-                    <input type="text" id="depotInput"
-                           placeholder="Depo adresi girin..."
-                           value="Bayraklı, İzmir" />
+                    <div class="depot-icon" title="Başlangıç">⌂</div>
+                    <input type="text" id="depotInput" placeholder="Başlangıç adresi girin..." />
                 </div>
             </div>
 
             <div class="section">
-                <div class="section-title">
-                    Teslimat Adresleri
-                    (<span id="addrCount">0</span>)
+                <div class="section-title">Ulaşım Modu</div>
+                <div class="mode-toggle">
+                    <button class="mode-btn active" id="btnDriving" onclick="setMode('driving')">🚗 Araba</button>
+                    <button class="mode-btn" id="btnFoot" onclick="setMode('foot')">🚶 Yaya</button>
                 </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Route Adresleri (<span id="addrCount">0</span>)</div>
                 <div class="address-list" id="addressList">
                     <div class="empty-hint">Henüz adres eklenmedi</div>
                 </div>
                 <div class="add-row">
-                    <input type="text" id="newInput"
-                           placeholder="Adres ekle, Enter'a bas..." />
+                    <input type="text" id="newInput" placeholder="Adres ekle, Enter'a bas..." />
                     <button class="btn-icon" onclick="addAddress()" title="Ekle">+</button>
                 </div>
-                <div class="hint-text">
-                    Birden fazla satır yapıştırabilirsiniz — her satır ayrı adres olarak eklenir.
-                </div>
+                <div class="hint-text">Birden fazla satır yapıştırabilirsiniz — her satır ayrı adres olarak eklenir.</div>
             </div>
 
             <button class="opt-btn" id="optimizeBtn" onclick="optimizeRoute()" disabled>
@@ -375,26 +345,35 @@
         <div class="result-panel" id="resultPanel" style="display:none;">
             <div class="section-title" style="margin-bottom:10px;">Optimize Edilmiş Rota</div>
             <div class="stats-row" id="statsRow"></div>
+            <div class="map-open-btns">
+                <button class="map-open-btn btn-google" onclick="openGoogleMaps()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    Google Maps
+                </button>
+                <button class="map-open-btn btn-apple" onclick="openAppleMaps()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    Apple Maps
+                </button>
+            </div>
             <div class="route-list" id="routeList"></div>
         </div>
-
     </div>
 
-    <div class="map-wrap">
-        <div id="map"></div>
-    </div>
+    <div class="map-wrap"><div id="map"></div></div>
 </div>
 
 <div class="status-bar" id="statusBar">
-    <span id="statusMsg">Adres ekleyerek başlayın</span>
+    <span id="statusMsg">Başlangıç noktası ve adresler ekleyerek başlayın</span>
 </div>
 
 <script>
 const addresses = [];
+let travelMode = 'driving';
+let lastRoute  = null;
 let map, routeLayer, markerLayer;
 
 function initMap() {
-    map = L.map('map').setView([38.465, 27.175], 13);
+    map = L.map('map').setView([39.9, 32.8], 6);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
@@ -402,34 +381,31 @@ function initMap() {
     markerLayer = L.layerGroup().addTo(map);
 }
 
+function setMode(mode) {
+    travelMode = mode;
+    document.getElementById('btnDriving').classList.toggle('active', mode === 'driving');
+    document.getElementById('btnFoot').classList.toggle('active', mode === 'foot');
+}
+
 function renderList() {
     const el  = document.getElementById('addressList');
     const cnt = document.getElementById('addrCount');
     const btn = document.getElementById('optimizeBtn');
     cnt.textContent = addresses.length;
-    btn.disabled    = addresses.length < 2;
+    btn.disabled    = addresses.length < 1;
     if (addresses.length === 0) {
         el.innerHTML = '<div class="empty-hint">Henüz adres eklenmedi</div>';
         return;
     }
     el.innerHTML = addresses.map((a, i) => {
         const cls = a.geocoded ? 'ok' : a.error ? 'err' : '';
-        return `
-        <div class="addr-item ${cls}" id="ai-${i}">
-            <div class="addr-badge">${i + 1}</div>
-            <div class="addr-body">
-                <input class="addr-input" value="${esc(a.text)}"
-                       onchange="editAddr(${i}, this.value)" />
-                ${a.error ? `<div class="addr-error">⚠ ${esc(a.error)}</div>` : ''}
-            </div>
-            <button class="rm-btn" onclick="removeAddr(${i})" title="Kaldır">×</button>
-        </div>`;
+        return `<div class="addr-item ${cls}"><div class="addr-badge">${i+1}</div><div class="addr-body"><input class="addr-input" value="${esc(a.text)}" onchange="editAddr(${i}, this.value)" />${a.error ? `<div class="addr-error">⚠ ${esc(a.error)}</div>` : ''}</div><button class="rm-btn" onclick="removeAddr(${i})">×</button></div>`;
     }).join('');
 }
 
 function addAddress(text) {
-    const inp = document.getElementById('newInput');
-    const raw = (text !== undefined ? text : inp.value);
+    const inp   = document.getElementById('newInput');
+    const raw   = text !== undefined ? text : inp.value;
     const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
     if (!lines.length) return;
     lines.forEach(l => addresses.push({ text: l, geocoded: null, error: null }));
@@ -437,15 +413,12 @@ function addAddress(text) {
     renderList();
 }
 
-function removeAddr(idx) {
-    addresses.splice(idx, 1);
-    renderList();
-}
+function removeAddr(idx) { addresses.splice(idx, 1); renderList(); }
 
 function editAddr(idx, val) {
-    addresses[idx].text     = val;
+    addresses[idx].text = val;
     addresses[idx].geocoded = null;
-    addresses[idx].error    = null;
+    addresses[idx].error = null;
 }
 
 document.getElementById('newInput').addEventListener('paste', e => {
@@ -463,58 +436,44 @@ function setStatus(msg, loading = false) {
     const bar = document.getElementById('statusBar');
     document.getElementById('statusMsg').textContent = msg;
     const sp = bar.querySelector('.spinner');
-    if (loading && !sp) {
-        const d = document.createElement('div');
-        d.className = 'spinner';
-        bar.insertBefore(d, bar.firstChild);
-    } else if (!loading && sp) {
-        sp.remove();
-    }
+    if (loading && !sp) { const d = document.createElement('div'); d.className = 'spinner'; bar.insertBefore(d, bar.firstChild); }
+    else if (!loading && sp) { sp.remove(); }
 }
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 function esc(s) {
-    return String(s)
-        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function fmtDuration(sec) {
     const m = Math.round(sec / 60);
     if (m < 60) return `${m} dk`;
-    return `${Math.floor(m / 60)}s ${m % 60}dk`;
+    return `${Math.floor(m/60)}s ${m%60}dk`;
 }
 
 function fmtDist(m) {
-    return m >= 1000 ? `${(m / 1000).toFixed(1)} km` : `${Math.round(m)} m`;
+    return m >= 1000 ? `${(m/1000).toFixed(1)} km` : `${Math.round(m)} m`;
 }
 
 async function geocode(text) {
-    const biased = /izmir|bayrakl/i.test(text)
-        ? text
-        : `${text}, Bayraklı, İzmir, Türkiye`;
-    const hit = await nominatim(biased);
-    if (hit) return hit;
-    const hit2 = await nominatim(text);
-    if (hit2) return hit2;
+    const res = await nominatim(text);
+    if (res) return res;
     throw new Error(`"${text}" konumu bulunamadı`);
 }
 
 async function nominatim(q) {
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1&countrycodes=tr`;
-    const res  = await fetch(url, {
-        headers: { 'Accept-Language': 'tr', 'User-Agent': 'KuryeRotaOpt/1.0' }
-    });
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1`;
+    const res = await fetch(url, { headers: { 'Accept-Language': 'tr', 'User-Agent': 'RouteOptimizer/1.0' } });
     if (!res.ok) throw new Error('Geocoding servisi yanıt vermedi');
     const data = await res.json();
     if (!data.length) return null;
     return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon), display: data[0].display_name };
 }
 
-async function getMatrix(coords) {
+async function getMatrix(coords, mode) {
     const cstr = coords.map(c => `${c.lon},${c.lat}`).join(';');
-    const url  = `https://router.project-osrm.org/table/v1/driving/${cstr}?annotations=duration,distance`;
+    const url  = `https://router.project-osrm.org/table/v1/${mode}/${cstr}?annotations=duration,distance`;
     const res  = await fetch(url);
     if (!res.ok) throw new Error('OSRM yanıt vermedi');
     const data = await res.json();
@@ -522,9 +481,9 @@ async function getMatrix(coords) {
     return { durations: data.durations, distances: data.distances };
 }
 
-async function getRouteGeometry(coords) {
+async function getRouteGeometry(coords, mode) {
     const cstr = coords.map(c => `${c.lon},${c.lat}`).join(';');
-    const url  = `https://router.project-osrm.org/route/v1/driving/${cstr}?overview=full&geometries=geojson`;
+    const url  = `https://router.project-osrm.org/route/v1/${mode}/${cstr}?overview=full&geometries=geojson`;
     const res  = await fetch(url);
     if (!res.ok) return null;
     const data = await res.json();
@@ -533,17 +492,16 @@ async function getRouteGeometry(coords) {
 }
 
 function nearestNeighbor(matrix, start = 0) {
-    const n       = matrix.length;
+    const n = matrix.length;
     const visited = new Array(n).fill(false);
-    const route   = [start];
+    const route = [start];
     visited[start] = true;
     for (let step = 1; step < n; step++) {
         const last = route[route.length - 1];
         let best = -1, bestVal = Infinity;
         for (let j = 0; j < n; j++) {
             if (!visited[j] && matrix[last][j] != null && matrix[last][j] < bestVal) {
-                bestVal = matrix[last][j];
-                best    = j;
+                bestVal = matrix[last][j]; best = j;
             }
         }
         if (best === -1) break;
@@ -553,21 +511,45 @@ function nearestNeighbor(matrix, start = 0) {
     return route;
 }
 
+function openGoogleMaps() {
+    if (!lastRoute) return;
+    const { orderedCoords, mode } = lastRoute;
+    const travelmode = mode === 'foot' ? 'walking' : 'driving';
+    const origin = `${orderedCoords[0].lat},${orderedCoords[0].lon}`;
+    const dest   = `${orderedCoords[orderedCoords.length-1].lat},${orderedCoords[orderedCoords.length-1].lon}`;
+    const wps    = orderedCoords.slice(1,-1).map(c=>`${c.lat},${c.lon}`).join('|');
+    let url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${dest}&travelmode=${travelmode}`;
+    if (wps) url += `&waypoints=${encodeURIComponent(wps)}`;
+    window.open(url, '_blank');
+}
+
+function openAppleMaps() {
+    if (!lastRoute) return;
+    const { orderedCoords, mode } = lastRoute;
+    const dirflg = mode === 'foot' ? 'w' : 'd';
+    const saddr  = `${orderedCoords[0].lat},${orderedCoords[0].lon}`;
+    const dparts = orderedCoords.slice(1).map(c=>`${c.lat},${c.lon}`);
+    const daddr  = dparts.join('+to:');
+    window.open(`https://maps.apple.com/?saddr=${saddr}&daddr=${encodeURIComponent(daddr)}&dirflg=${dirflg}`, '_blank');
+}
+
 async function optimizeRoute() {
     const depotText = document.getElementById('depotInput').value.trim();
-    if (!depotText) { alert('Depo adresi boş olamaz!'); return; }
-    if (addresses.length < 2) { alert('En az 2 teslimat adresi gerekli!'); return; }
+    if (!depotText) { alert('Başlangıç noktası boş olamaz!'); return; }
+    if (addresses.length < 1) { alert('En az 1 adres gerekli!'); return; }
 
-    const btn = document.getElementById('optimizeBtn');
+    const btn  = document.getElementById('optimizeBtn');
+    const mode = travelMode;
     btn.disabled = true;
     document.getElementById('resultPanel').style.display = 'none';
+    lastRoute = null;
 
-    setStatus('Depo adresi konuma dönüştürülüyor…', true);
+    setStatus('Başlangıç noktası konuma dönüştürülüyor…', true);
     let depotCoord;
     try {
         depotCoord = await geocode(depotText);
     } catch (e) {
-        setStatus(`Depo adresi bulunamadı: ${e.message}`, false);
+        setStatus(`Başlangıç noktası bulunamadı: ${e.message}`, false);
         btn.disabled = false;
         return;
     }
@@ -577,14 +559,14 @@ async function optimizeRoute() {
 
     for (let i = 0; i < addresses.length; i++) {
         await sleep(1100);
-        setStatus(`Adres ${i + 1}/${addresses.length} konuma dönüştürülüyor…`, true);
+        setStatus(`Adres ${i+1}/${addresses.length} konuma dönüştürülüyor…`, true);
         try {
             const coord = await geocode(addresses[i].text);
             addresses[i].geocoded = coord;
-            addresses[i].error    = null;
+            addresses[i].error = null;
             allCoords.push(coord);
         } catch (e) {
-            addresses[i].error    = e.message;
+            addresses[i].error = e.message;
             addresses[i].geocoded = null;
             hasError = true;
         }
@@ -600,7 +582,7 @@ async function optimizeRoute() {
     setStatus('Mesafe matrisi hesaplanıyor…', true);
     let matrix;
     try {
-        matrix = await getMatrix(allCoords);
+        matrix = await getMatrix(allCoords, mode);
     } catch (e) {
         setStatus(`Mesafe hesaplanamadı: ${e.message}`, false);
         btn.disabled = false;
@@ -609,17 +591,17 @@ async function optimizeRoute() {
 
     setStatus('En kısa rota hesaplanıyor…', true);
     const order = nearestNeighbor(matrix.durations, 0);
-
     const orderedCoords = order.map(i => allCoords[i]);
+
     let osrmRoute = null;
     try {
         setStatus('Harita rotası çiziliyor…', true);
-        osrmRoute = await getRouteGeometry(orderedCoords);
+        osrmRoute = await getRouteGeometry(orderedCoords, mode);
     } catch (_) {}
 
     let totalSec = 0, totalM = 0;
     for (let i = 0; i < order.length - 1; i++) {
-        const f = order[i], t = order[i + 1];
+        const f = order[i], t = order[i+1];
         if (matrix.durations[f][t]) totalSec += matrix.durations[f][t];
         if (matrix.distances && matrix.distances[f][t]) totalM += matrix.distances[f][t];
     }
@@ -635,62 +617,40 @@ async function optimizeRoute() {
         L.polyline(latlngs, { color: '#2563eb', weight: 3, opacity: 0.6, dashArray: '6 5' }).addTo(routeLayer);
     }
 
-    const stopColors = [
-        '#7c3aed','#c026d3','#db2777','#e11d48',
-        '#ea580c','#d97706','#65a30d','#0891b2',
-        '#0284c7','#4f46e5','#9333ea','#be185d',
-        '#b91c1c','#b45309','#047857'
-    ];
+    const stopColors = ['#7c3aed','#c026d3','#db2777','#e11d48','#ea580c','#d97706','#65a30d','#0891b2','#0284c7','#4f46e5','#9333ea','#be185d','#b91c1c','#b45309','#047857'];
 
     orderedCoords.forEach((coord, pos) => {
         const origIdx = order[pos];
-        const isDepot = origIdx === 0;
-        const label   = isDepot ? '⌂' : String(pos);
-        const bg      = isDepot ? '#1d4ed8' : stopColors[(pos - 1) % stopColors.length];
-        const addrTxt = isDepot ? depotText : addresses[origIdx - 1].text;
+        const isStart = origIdx === 0;
+        const label   = isStart ? '⌂' : String(pos);
+        const bg      = isStart ? '#1d4ed8' : stopColors[(pos-1) % stopColors.length];
+        const addrTxt = isStart ? depotText : addresses[origIdx-1].text;
         const icon = L.divIcon({
             className: '',
-            html: `<div style="background:${bg};color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:${isDepot ? '14' : '12'}px;border:2.5px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.35);line-height:1;">${label}</div>`,
-            iconSize:   [28, 28],
-            iconAnchor: [14, 14],
+            html: `<div style="background:${bg};color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:${isStart?'14':'12'}px;border:2.5px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.35);line-height:1;">${label}</div>`,
+            iconSize: [28,28], iconAnchor: [14,14],
         });
         L.marker([coord.lat, coord.lon], { icon })
-            .bindPopup(`<b>${isDepot ? 'Depo (Başlangıç)' : `Durak ${pos}`}</b><br><small>${addrTxt}</small>`)
+            .bindPopup(`<b>${isStart ? 'Başlangıç' : `Durak ${pos}`}</b><br><small>${addrTxt}</small>`)
             .addTo(markerLayer);
     });
 
     map.fitBounds(orderedCoords.map(c => [c.lat, c.lon]), { padding: [40, 40] });
 
     document.getElementById('statsRow').innerHTML = `
-        <div class="stat-card">
-            <div class="stat-value">${fmtDuration(totalSec)}</div>
-            <div class="stat-label">Toplam Süre</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value">${fmtDist(totalM)}</div>
-            <div class="stat-label">Toplam Mesafe</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value">${addresses.length}</div>
-            <div class="stat-label">Durak Sayısı</div>
-        </div>`;
+        <div class="stat-card"><div class="stat-value">${fmtDuration(totalSec)}</div><div class="stat-label">Toplam Süre</div></div>
+        <div class="stat-card"><div class="stat-value">${fmtDist(totalM)}</div><div class="stat-label">Toplam Mesafe</div></div>
+        <div class="stat-card"><div class="stat-value">${addresses.length}</div><div class="stat-label">Durak Sayısı</div></div>`;
 
-    const rows = order.map((origIdx, pos) => {
-        const isDepot = origIdx === 0;
-        const addrTxt = isDepot ? depotText : addresses[origIdx - 1].text;
-        const nextSeg = pos < order.length - 1
-            ? `→ ${fmtDuration(matrix.durations[order[pos]][order[pos + 1]] || 0)}`
-            : '';
-        return `
-        <div class="route-item">
-            <div class="rnum ${isDepot ? 'depot' : 'stop'}">${isDepot ? '⌂' : pos}</div>
-            <div class="raddr">${esc(addrTxt)}</div>
-            <div class="rdur">${nextSeg}</div>
-        </div>`;
+    document.getElementById('routeList').innerHTML = order.map((origIdx, pos) => {
+        const isStart = origIdx === 0;
+        const addrTxt = isStart ? depotText : addresses[origIdx-1].text;
+        const nextSeg = pos < order.length-1 ? `→ ${fmtDuration(matrix.durations[order[pos]][order[pos+1]] || 0)}` : '';
+        return `<div class="route-item"><div class="rnum ${isStart?'start':'stop'}">${isStart?'⌂':pos}</div><div class="raddr">${esc(addrTxt)}</div><div class="rdur">${nextSeg}</div></div>`;
     }).join('');
 
-    document.getElementById('routeList').innerHTML = rows;
     document.getElementById('resultPanel').style.display = 'block';
+    lastRoute = { orderedCoords, mode };
     setStatus(`Rota hazır — ${addresses.length} durak · ${fmtDist(totalM)} · ~${fmtDuration(totalSec)}`, false);
     btn.disabled = false;
 }
