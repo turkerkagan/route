@@ -719,9 +719,19 @@ async function geocode(text) {
 /* ═══════════════════════════════════════
    OSRM — Distance Matrix
 ═══════════════════════════════════════ */
+function osrmBase(mode) {
+    return mode === 'foot'
+        ? 'https://routing.openstreetmap.de/routed-foot'
+        : 'https://router.project-osrm.org';
+}
+
+function osrmProfile(mode) {
+    return mode === 'foot' ? 'foot' : 'driving';
+}
+
 async function getMatrix(coords, mode) {
     const cstr = coords.map(c => `${c.lon},${c.lat}`).join(';');
-    const url  = `https://router.project-osrm.org/table/v1/${mode}/${cstr}?annotations=duration,distance`;
+    const url  = `${osrmBase(mode)}/table/v1/${osrmProfile(mode)}/${cstr}?annotations=duration,distance`;
     const res  = await fetch(url);
     if (!res.ok) throw new Error('OSRM yanıt vermedi');
     const data = await res.json();
@@ -734,7 +744,7 @@ async function getMatrix(coords, mode) {
 ═══════════════════════════════════════ */
 async function getRouteGeometry(coords, mode) {
     const cstr = coords.map(c => `${c.lon},${c.lat}`).join(';');
-    const url  = `https://router.project-osrm.org/route/v1/${mode}/${cstr}?overview=full&geometries=geojson`;
+    const url  = `${osrmBase(mode)}/route/v1/${osrmProfile(mode)}/${cstr}?overview=full&geometries=geojson`;
     const res  = await fetch(url);
     if (!res.ok) return null;
     const data = await res.json();
@@ -761,6 +771,37 @@ function nearestNeighbor(matrix, start = 0) {
         if (best === -1) break;
         route.push(best);
         visited[best] = true;
+    }
+    return route;
+}
+
+/* ═══════════════════════════════════════
+   TSP — 2-opt improvement
+═══════════════════════════════════════ */
+function twoOpt(route, matrix) {
+    const n = route.length;
+    let improved = true;
+    while (improved) {
+        improved = false;
+        for (let i = 1; i < n - 1; i++) {
+            for (let j = i + 1; j < n; j++) {
+                // Current cost: ...→route[i-1]→route[i]→...→route[j]→route[j+1]→...
+                // Reversed cost: ...→route[i-1]→route[j]→...→route[i]→route[j+1]→...
+                const a = route[i - 1], b = route[i];
+                const c = route[j],     d = j + 1 < n ? route[j + 1] : -1;
+                const before = (matrix[a][b] ?? Infinity) + (d >= 0 ? (matrix[c][d] ?? Infinity) : 0);
+                const after  = (matrix[a][c] ?? Infinity) + (d >= 0 ? (matrix[b][d] ?? Infinity) : 0);
+                if (after < before - 0.01) {
+                    // Reverse the segment from i to j
+                    let lo = i, hi = j;
+                    while (lo < hi) {
+                        [route[lo], route[hi]] = [route[hi], route[lo]];
+                        lo++; hi--;
+                    }
+                    improved = true;
+                }
+            }
+        }
     }
     return route;
 }
@@ -863,9 +904,9 @@ async function optimizeRoute() {
         return;
     }
 
-    // 4. TSP
+    // 4. TSP — nearest neighbor + 2-opt refinement
     setStatus('En kısa rota hesaplanıyor…', true);
-    const order         = nearestNeighbor(matrix.durations, 0);
+    const order         = twoOpt(nearestNeighbor(matrix.durations, 0), matrix.durations);
     const orderedCoords = order.map(i => allCoords[i]);
 
     // 5. Harita geometrisi
