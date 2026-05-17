@@ -77,53 +77,10 @@
             font-size: 0.85rem;
             outline: none;
             color: #1e293b;
-            transition: border-color 0.15s, border-radius 0.15s;
+            transition: border-color 0.15s;
             background: white;
         }
         input[type="text"]:focus { border-color: #3b82f6; }
-        input[type="text"].ac-open {
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-            border-color: #3b82f6;
-        }
-
-        /* ─── Autocomplete dropdown ─── */
-        .ac-dropdown {
-            position: fixed;
-            background: white;
-            border: 1.5px solid #3b82f6;
-            border-top: none;
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.13);
-            z-index: 99999;
-            max-height: 230px;
-            overflow-y: auto;
-        }
-
-        .ac-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            padding: 9px 12px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            color: #374151;
-            line-height: 1.4;
-            border-bottom: 1px solid #f1f5f9;
-            transition: background 0.1s;
-        }
-        .ac-item:last-child { border-bottom: none; }
-        .ac-item:hover, .ac-item.hi {
-            background: #eff6ff;
-            color: #1d4ed8;
-        }
-        .ac-item:hover .ac-pin, .ac-item.hi .ac-pin { color: #3b82f6; }
-
-        .ac-pin {
-            width: 13px; height: 13px;
-            flex-shrink: 0; margin-top: 2px;
-            color: #cbd5e1;
-        }
 
         /* ─── Travel Mode ─── */
         .mode-toggle {
@@ -151,6 +108,36 @@
             color: #1d4ed8;
             box-shadow: 0 1px 4px rgba(0,0,0,0.12);
         }
+
+        /* ─── Structured Address Form ─── */
+        .addr-form {
+            margin-top: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .addr-form-row {
+            display: flex;
+            gap: 6px;
+        }
+
+        .addr-form-row input { flex: 1; }
+        .no-input { flex: 0 0 72px !important; width: 72px; }
+
+        .add-addr-btn {
+            width: 100%;
+            padding: 9px;
+            background: #1d4ed8;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .add-addr-btn:hover { background: #1e40af; }
 
         /* ─── Address List ─── */
         .address-list {
@@ -187,18 +174,19 @@
             color: white;
             font-size: 11px; font-weight: 700;
             display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; margin-top: 4px;
+            flex-shrink: 0; margin-top: 3px;
         }
 
         .addr-body { flex: 1; min-width: 0; }
 
-        .addr-input {
-            border: none; background: transparent;
-            font-size: 0.85rem; width: 100%;
-            padding: 2px 0; color: #1e293b; outline: none;
+        .addr-text {
+            font-size: 0.82rem;
+            color: #1e293b;
+            line-height: 1.4;
+            word-break: break-word;
         }
 
-        .addr-error { font-size: 0.72rem; color: #ef4444; margin-top: 2px; }
+        .addr-error { font-size: 0.72rem; color: #ef4444; margin-top: 3px; }
 
         .rm-btn {
             background: none; border: none;
@@ -207,20 +195,6 @@
             padding: 0 2px; transition: color 0.15s; margin-top: 1px;
         }
         .rm-btn:hover { color: #f87171; }
-
-        .add-row { display: flex; gap: 8px; }
-        .add-row input { flex: 1; }
-
-        .btn-icon {
-            padding: 8px 12px;
-            background: #f1f5f9;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 7px;
-            cursor: pointer; font-size: 18px;
-            line-height: 1; color: #475569;
-            transition: all 0.15s;
-        }
-        .btn-icon:hover { background: #e2e8f0; color: #1e293b; }
 
         .hint-text { font-size: 0.72rem; color: #94a3b8; margin-top: 5px; }
 
@@ -316,8 +290,8 @@
 
         @media (max-width: 700px) {
             .main { flex-direction: column; }
-            .sidebar { width: 100%; min-width: unset; max-height: 55vh; }
-            .map-wrap { min-height: 45vh; }
+            .sidebar { width: 100%; min-width: unset; max-height: 60vh; }
+            .map-wrap { min-height: 40vh; }
             .result-panel { max-height: 40vh; }
         }
     </style>
@@ -357,14 +331,25 @@
             <!-- Route Adresleri -->
             <div class="section">
                 <div class="section-title">Route Adresleri (<span id="addrCount">0</span>)</div>
+
+                <!-- Kuyruk listesi -->
                 <div class="address-list" id="addressList">
                     <div class="empty-hint">Henüz adres eklenmedi</div>
                 </div>
-                <div class="add-row">
-                    <input type="text" id="newInput" placeholder="Adres ekle, Enter'a bas..." />
-                    <button class="btn-icon" onclick="addAddress()" title="Ekle">+</button>
+
+                <!-- Yapılandırılmış adres formu -->
+                <div class="addr-form">
+                    <div class="addr-form-row">
+                        <input type="text" id="fIl"   placeholder="İl"    value="İzmir" />
+                        <input type="text" id="fIlce" placeholder="İlçe" />
+                    </div>
+                    <div class="addr-form-row">
+                        <input type="text" id="fSokak" placeholder="Sokak / Cadde" />
+                        <input type="text" id="fNo" placeholder="No" class="no-input" />
+                    </div>
+                    <button class="add-addr-btn" onclick="addStructuredAddress()">+ Adres Ekle</button>
                 </div>
-                <div class="hint-text">Birden fazla satır yapıştırabilirsiniz — her satır ayrı adres.</div>
+                <div class="hint-text">Adres bulunamazsa OSM haritasında kayıtlı olmayabilir — sokak adını kontrol edin.</div>
             </div>
 
             <!-- Optimize -->
@@ -407,10 +392,10 @@
 /* ═══════════════════════════════════════
    STATE
 ═══════════════════════════════════════ */
-const addresses = []; // { text, geocoded:{lat,lon,display}|null, error:string|null }
-let travelMode  = 'driving';
-let lastRoute   = null;
-let depotCache  = null; // { text, coord } — depot pre-geocoded via autocomplete
+// { text, il, ilce, sokak, no, geocoded:{lat,lon,display}|null, error:string|null }
+const addresses = [];
+let travelMode = 'driving';
+let lastRoute  = null;
 let map, routeLayer, markerLayer;
 
 /* ═══════════════════════════════════════
@@ -435,163 +420,6 @@ function setMode(mode) {
 }
 
 /* ═══════════════════════════════════════
-   AUTOCOMPLETE
-═══════════════════════════════════════ */
-// Single shared dropdown appended to body (avoids overflow clipping)
-const acEl = (() => {
-    const el = document.createElement('div');
-    el.className = 'ac-dropdown';
-    el.style.display = 'none';
-    document.body.appendChild(el);
-    return el;
-})();
-
-let acItems   = [];
-let acHi      = -1;
-let acInput   = null;
-let acOnSel   = null;
-let acTimer   = null;
-
-function acHide() {
-    acEl.style.display = 'none';
-    acHi = -1;
-    if (acInput) acInput.classList.remove('ac-open');
-}
-
-function acPosition() {
-    if (!acInput) return;
-    const r = acInput.getBoundingClientRect();
-    acEl.style.top   = `${r.bottom}px`;
-    acEl.style.left  = `${r.left}px`;
-    acEl.style.width = `${r.width}px`;
-}
-
-function acHighlight(n) {
-    acHi = n;
-    acEl.querySelectorAll('.ac-item').forEach((el, i) =>
-        el.classList.toggle('hi', i === acHi)
-    );
-}
-
-function acPick(i) {
-    if (i < 0 || i >= acItems.length) return;
-    const it = acItems[i];
-    if (acInput) {
-        acInput.value = it.display_name;
-        acInput.classList.remove('ac-open');
-    }
-    if (acOnSel) acOnSel(it);
-    acHide();
-}
-
-function acShow(results, inp) {
-    if (acInput !== inp) return; // stale response
-    acItems = results;
-    acHi    = -1;
-    if (!results.length) { acHide(); return; }
-
-    acEl.innerHTML = results.map((r, i) => `
-        <div class="ac-item" data-i="${i}">
-            <svg class="ac-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                <circle cx="12" cy="10" r="3"/>
-            </svg>
-            <span>${esc(r.display_name)}</span>
-        </div>`
-    ).join('');
-
-    acEl.querySelectorAll('.ac-item').forEach(el => {
-        el.addEventListener('mouseover', () => acHighlight(parseInt(el.dataset.i)));
-        el.addEventListener('mousedown', e => {
-            e.preventDefault(); // prevent blur before pick
-            acPick(parseInt(el.dataset.i));
-        });
-    });
-
-    acPosition();
-    acEl.style.display = 'block';
-    if (acInput) acInput.classList.add('ac-open');
-}
-
-async function acFetch(q) {
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=5&viewbox=26.5,38.8,27.6,38.1&bounded=0`;
-    try {
-        const res = await fetch(url, {
-            headers: { 'Accept-Language': 'tr', 'User-Agent': 'RouteOptimizer/1.0' }
-        });
-        return await res.json();
-    } catch { return []; }
-}
-
-function makeAC(input, onSelect) {
-    input.addEventListener('focus', () => {
-        acInput = input;
-        acOnSel = onSelect;
-    });
-
-    input.addEventListener('input', () => {
-        acInput = input;
-        acOnSel = onSelect;
-        clearTimeout(acTimer);
-        const q = input.value.trim();
-        if (q.length < 3) { acHide(); return; }
-        acTimer = setTimeout(async () => {
-            const results = await acFetch(q);
-            acShow(results, input); // acShow checks if still same input
-        }, 380);
-    });
-
-    input.addEventListener('keydown', e => {
-        if (acEl.style.display === 'none' || acInput !== input) return;
-        if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            acHighlight(Math.min(acHi + 1, acItems.length - 1));
-        } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            acHighlight(Math.max(acHi - 1, 0));
-        } else if (e.key === 'Enter' && acHi >= 0) {
-            e.preventDefault();
-            acPick(acHi);
-        } else if (e.key === 'Escape') {
-            acHide();
-        }
-    });
-
-    input.addEventListener('blur', () => {
-        setTimeout(() => {
-            if (acInput === input) acHide();
-        }, 160);
-    });
-}
-
-// Close on outside click or scroll
-document.addEventListener('click', e => {
-    if (!acEl.contains(e.target)) acHide();
-});
-document.querySelector('.sidebar-scroll') &&
-    document.querySelector('.sidebar-scroll').addEventListener('scroll', acHide);
-window.addEventListener('resize', acHide);
-
-// Attach autocomplete to each addr-input after renderList
-function attachListACs() {
-    document.querySelectorAll('.addr-input[data-idx]').forEach(input => {
-        const idx = parseInt(input.dataset.idx);
-        makeAC(input, result => {
-            addresses[idx].text     = result.display_name;
-            addresses[idx].geocoded = {
-                lat: parseFloat(result.lat),
-                lon: parseFloat(result.lon),
-                display: result.display_name
-            };
-            addresses[idx].error = null;
-            // Mark item as pre-geocoded (green border)
-            input.closest('.addr-item')?.classList.add('ok');
-            input.closest('.addr-item')?.classList.remove('err');
-        });
-    });
-}
-
-/* ═══════════════════════════════════════
    ADDRESS LIST
 ═══════════════════════════════════════ */
 function renderList() {
@@ -612,26 +440,38 @@ function renderList() {
         <div class="addr-item ${cls}">
             <div class="addr-badge">${i + 1}</div>
             <div class="addr-body">
-                <input class="addr-input" data-idx="${i}" value="${esc(a.text)}"
-                       onchange="editAddr(${i}, this.value)" />
+                <div class="addr-text">${esc(a.text)}</div>
                 ${a.error ? `<div class="addr-error">⚠ ${esc(a.error)}</div>` : ''}
             </div>
             <button class="rm-btn" onclick="removeAddr(${i})">×</button>
         </div>`;
     }).join('');
-
-    attachListACs();
 }
 
-function addAddress(text) {
-    const inp   = document.getElementById('newInput');
-    const raw   = text !== undefined ? text : inp.value;
-    // support multiline paste
-    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
-    if (!lines.length) return;
-    lines.forEach(l => addresses.push({ text: l, geocoded: null, error: null }));
-    inp.value = '';
-    acHide();
+function addStructuredAddress() {
+    const il    = document.getElementById('fIl').value.trim();
+    const ilce  = document.getElementById('fIlce').value.trim();
+    const sokak = document.getElementById('fSokak').value.trim();
+    const no    = document.getElementById('fNo').value.trim();
+
+    if (!sokak) {
+        alert('Sokak / Cadde alanı zorunludur!');
+        document.getElementById('fSokak').focus();
+        return;
+    }
+
+    const parts = [];
+    if (no)   parts.push(no);
+    parts.push(sokak);
+    if (ilce) parts.push(ilce);
+    if (il)   parts.push(il);
+    const text = parts.join(', ');
+
+    addresses.push({ text, il, ilce, sokak, no, geocoded: null, error: null });
+
+    document.getElementById('fSokak').value = '';
+    document.getElementById('fNo').value    = '';
+    document.getElementById('fSokak').focus();
     renderList();
 }
 
@@ -640,28 +480,12 @@ function removeAddr(idx) {
     renderList();
 }
 
-function editAddr(idx, val) {
-    // Only clear geocode if text actually changed (autocomplete sets value programmatically
-    // without triggering onchange, so geocoded remains intact after autocomplete pick)
-    if (addresses[idx].text !== val) {
-        addresses[idx].geocoded = null;
-        addresses[idx].error    = null;
-    }
-    addresses[idx].text = val;
-}
-
-document.getElementById('newInput').addEventListener('paste', e => {
-    const txt = (e.clipboardData || window.clipboardData).getData('text');
-    if (!txt.includes('\n')) return;
-    e.preventDefault();
-    addAddress(txt);
+// Enter on Sokak or No triggers add
+document.getElementById('fSokak').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addStructuredAddress();
 });
-
-document.getElementById('newInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter' && acHi < 0) { // only add if no AC item highlighted
-        e.preventDefault();
-        addAddress();
-    }
+document.getElementById('fNo').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addStructuredAddress();
 });
 
 /* ═══════════════════════════════════════
@@ -704,20 +528,44 @@ function fmtDist(m) {
 /* ═══════════════════════════════════════
    GEOCODING — Nominatim
 ═══════════════════════════════════════ */
+const NOM_HEADERS = { 'Accept-Language': 'tr', 'User-Agent': 'RouteOptimizer/1.0' };
+
+// Free-text geocode (used for depot)
 async function geocode(text) {
     const q = /izmir/i.test(text) ? text : `${text}, İzmir`;
     const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1&viewbox=26.5,38.8,27.6,38.1&bounded=0`;
-    const res  = await fetch(url, {
-        headers: { 'Accept-Language': 'tr', 'User-Agent': 'RouteOptimizer/1.0' }
-    });
+    const res = await fetch(url, { headers: NOM_HEADERS });
     if (!res.ok) throw new Error('Geocoding servisi yanıt vermedi');
     const data = await res.json();
     if (!data.length) throw new Error(`"${text}" konumu bulunamadı`);
     return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon), display: data[0].display_name };
 }
 
+// Structured geocode — uses Nominatim's structured params for better accuracy, falls back to free-text
+async function geocodeAddr(addr) {
+    const street = addr.no ? `${addr.no} ${addr.sokak}` : addr.sokak;
+    let qstr = `street=${encodeURIComponent(street)}`;
+    if (addr.il)   qstr += `&city=${encodeURIComponent(addr.il)}`;
+    if (addr.ilce) qstr += `&county=${encodeURIComponent(addr.ilce)}`;
+    qstr += `&format=json&limit=1&countrycodes=tr`;
+
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?${qstr}`, { headers: NOM_HEADERS });
+    if (!res.ok) throw new Error('Geocoding servisi yanıt vermedi');
+    const data = await res.json();
+    if (data.length) {
+        return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon), display: data[0].display_name };
+    }
+    // Fallback: combine all parts as a free-text query
+    const fallbackUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addr.text)}&format=json&limit=1&viewbox=26.5,38.8,27.6,38.1&bounded=0`;
+    const res2 = await fetch(fallbackUrl, { headers: NOM_HEADERS });
+    if (!res2.ok) throw new Error('Geocoding servisi yanıt vermedi');
+    const data2 = await res2.json();
+    if (!data2.length) throw new Error(`"${addr.text}" OSM'de bulunamadı — sokak adını kontrol edin`);
+    return { lat: parseFloat(data2[0].lat), lon: parseFloat(data2[0].lon), display: data2[0].display_name };
+}
+
 /* ═══════════════════════════════════════
-   OSRM — Distance Matrix
+   OSRM
 ═══════════════════════════════════════ */
 function osrmBase(mode) {
     return mode === 'foot'
@@ -739,9 +587,6 @@ async function getMatrix(coords, mode) {
     return { durations: data.durations, distances: data.distances };
 }
 
-/* ═══════════════════════════════════════
-   OSRM — Route Geometry
-═══════════════════════════════════════ */
 async function getRouteGeometry(coords, mode) {
     const cstr = coords.map(c => `${c.lon},${c.lat}`).join(';');
     const url  = `${osrmBase(mode)}/route/v1/${osrmProfile(mode)}/${cstr}?overview=full&geometries=geojson`;
@@ -753,7 +598,7 @@ async function getRouteGeometry(coords, mode) {
 }
 
 /* ═══════════════════════════════════════
-   TSP — Nearest Neighbor
+   TSP — Nearest Neighbor + 2-opt
 ═══════════════════════════════════════ */
 function nearestNeighbor(matrix, start = 0) {
     const n = matrix.length;
@@ -775,9 +620,6 @@ function nearestNeighbor(matrix, start = 0) {
     return route;
 }
 
-/* ═══════════════════════════════════════
-   TSP — 2-opt improvement
-═══════════════════════════════════════ */
 function twoOpt(route, matrix) {
     const n = route.length;
     let improved = true;
@@ -785,19 +627,13 @@ function twoOpt(route, matrix) {
         improved = false;
         for (let i = 1; i < n - 1; i++) {
             for (let j = i + 1; j < n; j++) {
-                // Current cost: ...→route[i-1]→route[i]→...→route[j]→route[j+1]→...
-                // Reversed cost: ...→route[i-1]→route[j]→...→route[i]→route[j+1]→...
                 const a = route[i - 1], b = route[i];
                 const c = route[j],     d = j + 1 < n ? route[j + 1] : -1;
                 const before = (matrix[a][b] ?? Infinity) + (d >= 0 ? (matrix[c][d] ?? Infinity) : 0);
                 const after  = (matrix[a][c] ?? Infinity) + (d >= 0 ? (matrix[b][d] ?? Infinity) : 0);
                 if (after < before - 0.01) {
-                    // Reverse the segment from i to j
                     let lo = i, hi = j;
-                    while (lo < hi) {
-                        [route[lo], route[hi]] = [route[hi], route[lo]];
-                        lo++; hi--;
-                    }
+                    while (lo < hi) { [route[lo], route[hi]] = [route[hi], route[lo]]; lo++; hi--; }
                     improved = true;
                 }
             }
@@ -844,38 +680,30 @@ async function optimizeRoute() {
     document.getElementById('resultPanel').style.display = 'none';
     lastRoute = null;
 
-    // 1. Depot geocode (use cache if autocomplete pre-geocoded it)
+    // 1. Depot geocode
+    setStatus('Başlangıç noktası konuma dönüştürülüyor…', true);
     let depotCoord;
-    if (depotCache && depotCache.text === depotText) {
-        depotCoord = depotCache.coord;
-    } else {
-        setStatus('Başlangıç noktası konuma dönüştürülüyor…', true);
-        try {
-            depotCoord = await geocode(depotText);
-            depotCache = { text: depotText, coord: depotCoord };
-        } catch (e) {
-            setStatus(`Başlangıç noktası bulunamadı: ${e.message}`, false);
-            btn.disabled = false;
-            return;
-        }
+    try {
+        depotCoord = await geocode(depotText);
+    } catch (e) {
+        setStatus(`Başlangıç noktası bulunamadı: ${e.message}`, false);
+        btn.disabled = false;
+        return;
     }
 
-    // 2. Route adresleri geocode et (önbellekte olanları atla)
+    // 2. Adresler geocode et (önbellekte olanları atla)
     const allCoords = [depotCoord];
     let hasError = false;
-    let needDelay = false;
 
     for (let i = 0; i < addresses.length; i++) {
         if (addresses[i].geocoded) {
-            // Autocomplete ile zaten geocode edilmiş, tekrar istek atmaya gerek yok
             allCoords.push(addresses[i].geocoded);
             continue;
         }
-        if (needDelay) await sleep(1100); // Nominatim rate limit
-        needDelay = true;
+        await sleep(1100); // Nominatim rate limit
         setStatus(`Adres ${i + 1}/${addresses.length} konuma dönüştürülüyor…`, true);
         try {
-            const coord = await geocode(addresses[i].text);
+            const coord = await geocodeAddr(addresses[i]);
             addresses[i].geocoded = coord;
             addresses[i].error    = null;
             allCoords.push(coord);
@@ -888,7 +716,7 @@ async function optimizeRoute() {
     }
 
     if (hasError) {
-        setStatus('Bazı adresler bulunamadı — lütfen hataları düzeltin.', false);
+        setStatus('Bazı adresler bulunamadı — lütfen sokak adını kontrol edin.', false);
         btn.disabled = false;
         return;
     }
@@ -904,7 +732,7 @@ async function optimizeRoute() {
         return;
     }
 
-    // 4. TSP — nearest neighbor + 2-opt refinement
+    // 4. TSP — nearest neighbor + 2-opt
     setStatus('En kısa rota hesaplanıyor…', true);
     const order         = twoOpt(nearestNeighbor(matrix.durations, 0), matrix.durations);
     const orderedCoords = order.map(i => allCoords[i]);
@@ -920,7 +748,7 @@ async function optimizeRoute() {
     let totalSec = 0, totalM = 0;
     for (let i = 0; i < order.length - 1; i++) {
         const f = order[i], t = order[i + 1];
-        if (matrix.durations[f][t])                    totalSec += matrix.durations[f][t];
+        if (matrix.durations[f][t])                     totalSec += matrix.durations[f][t];
         if (matrix.distances && matrix.distances[f][t]) totalM   += matrix.distances[f][t];
     }
 
@@ -994,57 +822,6 @@ async function optimizeRoute() {
 ═══════════════════════════════════════ */
 initMap();
 renderList();
-
-// Depot autocomplete
-makeAC(document.getElementById('depotInput'), result => {
-    depotCache = {
-        text:  result.display_name,
-        coord: { lat: parseFloat(result.lat), lon: parseFloat(result.lon), display: result.display_name }
-    };
-    document.getElementById('depotInput').value = result.display_name;
-});
-
-// Depot: clear cache if user types manually
-document.getElementById('depotInput').addEventListener('input', () => {
-    if (depotCache && document.getElementById('depotInput').value !== depotCache.text) {
-        depotCache = null;
-    }
-});
-
-// newInput autocomplete — on select, pre-geocode the address
-let newAcCache = null;
-makeAC(document.getElementById('newInput'), result => {
-    newAcCache = {
-        text:  result.display_name,
-        coord: { lat: parseFloat(result.lat), lon: parseFloat(result.lon), display: result.display_name }
-    };
-    document.getElementById('newInput').value = result.display_name;
-});
-
-// Override addAddress to use pre-geocoded coord when available
-const _addAddress = addAddress;
-window.addAddress = function(text) {
-    const inp = document.getElementById('newInput');
-    const raw = text !== undefined ? text : inp.value;
-    if (!raw.includes('\n')) {
-        const val = raw.trim();
-        if (!val) return;
-        const geo = (newAcCache && newAcCache.text === val) ? newAcCache.coord : null;
-        addresses.push({ text: val, geocoded: geo, error: null });
-        inp.value = '';
-        newAcCache = null;
-        acHide();
-        renderList();
-        return;
-    }
-    // multiline paste — no pre-geocoding available
-    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
-    lines.forEach(l => addresses.push({ text: l, geocoded: null, error: null }));
-    inp.value = '';
-    newAcCache = null;
-    acHide();
-    renderList();
-};
 </script>
 </body>
 </html>
