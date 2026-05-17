@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Route Optimizasyon</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -83,7 +83,6 @@
         input[type="text"]:focus { border-color: #3b82f6; }
 
         select {
-            width: 100%;
             padding: 8px 10px;
             border: 1.5px solid #e2e8f0;
             border-radius: 7px;
@@ -141,7 +140,8 @@
             gap: 6px;
         }
 
-        .addr-form-row input { flex: 1; }
+        .addr-form-row input,
+        .addr-form-row select { flex: 1; min-width: 0; }
         .no-input { flex: 0 0 72px !important; width: 72px; }
 
         .add-addr-btn {
@@ -312,6 +312,8 @@
             .sidebar { width: 100%; min-width: unset; max-height: 60vh; }
             .map-wrap { min-height: 40vh; }
             .result-panel { max-height: 40vh; }
+            /* Prevent iOS auto-zoom on input focus */
+            input[type="text"], select { font-size: 16px; }
         }
     </style>
 </head>
