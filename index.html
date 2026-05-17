@@ -82,6 +82,25 @@
         }
         input[type="text"]:focus { border-color: #3b82f6; }
 
+        select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 7px;
+            font-size: 0.85rem;
+            outline: none;
+            color: #1e293b;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.15s;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 28px;
+        }
+        select:focus { border-color: #3b82f6; }
+
         /* ─── Travel Mode ─── */
         .mode-toggle {
             display: flex;
@@ -341,7 +360,38 @@
                 <div class="addr-form">
                     <div class="addr-form-row">
                         <input type="text" id="fIl"   placeholder="İl"    value="İzmir" />
-                        <input type="text" id="fIlce" placeholder="İlçe" />
+                        <select id="fIlce">
+                            <option value="Aliağa">Aliağa</option>
+                            <option value="Balçova">Balçova</option>
+                            <option value="Bayındır">Bayındır</option>
+                            <option value="Bayraklı" selected>Bayraklı</option>
+                            <option value="Bergama">Bergama</option>
+                            <option value="Beydağ">Beydağ</option>
+                            <option value="Bornova">Bornova</option>
+                            <option value="Buca">Buca</option>
+                            <option value="Çeşme">Çeşme</option>
+                            <option value="Çiğli">Çiğli</option>
+                            <option value="Dikili">Dikili</option>
+                            <option value="Foça">Foça</option>
+                            <option value="Gaziemir">Gaziemir</option>
+                            <option value="Güzelbahçe">Güzelbahçe</option>
+                            <option value="Karabağlar">Karabağlar</option>
+                            <option value="Karaburun">Karaburun</option>
+                            <option value="Karşıyaka">Karşıyaka</option>
+                            <option value="Kemalpaşa">Kemalpaşa</option>
+                            <option value="Kınık">Kınık</option>
+                            <option value="Kiraz">Kiraz</option>
+                            <option value="Konak">Konak</option>
+                            <option value="Menderes">Menderes</option>
+                            <option value="Menemen">Menemen</option>
+                            <option value="Narlıdere">Narlıdere</option>
+                            <option value="Ödemiş">Ödemiş</option>
+                            <option value="Seferihisar">Seferihisar</option>
+                            <option value="Selçuk">Selçuk</option>
+                            <option value="Tire">Tire</option>
+                            <option value="Torbalı">Torbalı</option>
+                            <option value="Urla">Urla</option>
+                        </select>
                     </div>
                     <div class="addr-form-row">
                         <input type="text" id="fSokak" placeholder="Sokak / Cadde" />
