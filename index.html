@@ -204,37 +204,31 @@
             gap: 6px;
         }
 
-        .addr-form-row { display: flex; gap: 6px; }
+        .addr-form-row { display: flex; gap: 6px; align-items: stretch; }
         .addr-form-row input, .addr-form-row select { flex: 1; min-width: 0; }
-        .no-input { flex: 0 0 68px !important; }
+        .no-input { flex: 0 0 56px !important; }
 
-        .add-addr-btn {
-            width: 100%;
-            padding: 8px;
-            background: #1d4ed8;
-            color: white;
-            border: none;
-            border-radius: 7px;
-            font-size: 0.85rem;
-            font-weight: 600;
+        .btn-add-icon {
+            flex: 0 0 34px;
+            background: #1d4ed8; color: white;
+            border: none; border-radius: 7px;
+            font-size: 20px; font-weight: 300; line-height: 1;
             cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
             transition: background 0.2s;
         }
-        .add-addr-btn:hover { background: #1e40af; }
+        .btn-add-icon:hover { background: #1e40af; }
 
-        /* ─── Optimize Button ─── */
-        .opt-btn {
-            width: 100%; padding: 10px;
+        .btn-opt-icon {
+            flex: 0 0 34px;
             background: #16a34a; color: white;
-            border: none; border-radius: 8px;
-            font-size: 0.9rem; font-weight: 600;
+            border: none; border-radius: 7px;
             cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
+            display: flex; align-items: center; justify-content: center;
             transition: background 0.2s, opacity 0.2s;
-            margin-top: 10px;
         }
-        .opt-btn:hover:not(:disabled) { background: #15803d; }
-        .opt-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-opt-icon:hover:not(:disabled) { background: #15803d; }
+        .btn-opt-icon:disabled { opacity: 0.35; cursor: not-allowed; }
 
         /* ─── Result Panel ─── */
         .result-panel {
@@ -386,18 +380,14 @@
                 <div class="addr-form-row">
                     <input type="text" id="fSokak" placeholder="Sokak / Cadde" />
                     <input type="text" id="fNo" placeholder="No" class="no-input" />
+                    <button class="btn-add-icon" onclick="addStructuredAddress()" title="Adres Ekle">+</button>
+                    <button class="btn-opt-icon" id="optimizeBtn" onclick="optimizeRoute()" disabled title="Rotayı Optimize Et">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                    </button>
                 </div>
-                <button class="add-addr-btn" onclick="addStructuredAddress()">+ Adres Ekle</button>
             </div>
-
-            <!-- Optimize -->
-            <button class="opt-btn" id="optimizeBtn" onclick="optimizeRoute()" disabled>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                    <polyline points="17 6 23 6 23 12"/>
-                </svg>
-                Rotayı Optimize Et
-            </button>
 
         </div>
 
