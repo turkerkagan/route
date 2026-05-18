@@ -22,7 +22,7 @@
         header {
             background: #1d4ed8;
             color: white;
-            padding: 12px 20px;
+            padding: 9px 16px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -31,13 +31,13 @@
             z-index: 10;
         }
 
-        header h1 { font-size: 1.1rem; font-weight: 600; }
+        header h1 { font-size: 1rem; font-weight: 600; }
 
         .main { display: flex; flex: 1; overflow: hidden; }
 
         .sidebar {
-            width: 370px;
-            min-width: 320px;
+            width: 340px;
+            min-width: 300px;
             background: white;
             display: flex;
             flex-direction: column;
@@ -46,32 +46,129 @@
             z-index: 5;
         }
 
-        .sidebar-scroll { flex: 1; overflow-y: auto; padding: 16px; }
+        .sidebar-scroll { flex: 1; overflow-y: auto; padding: 12px; }
 
-        .section { margin-bottom: 18px; }
-
-        .section-title {
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: #94a3b8;
-            letter-spacing: 0.07em;
-            margin-bottom: 8px;
+        /* ─── Mode Bar ─── */
+        .mode-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
         }
 
-        .depot-row { display: flex; align-items: center; gap: 8px; }
+        .mode-icons {
+            display: flex;
+            gap: 3px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 3px;
+        }
+
+        .mode-icon-btn {
+            width: 34px; height: 34px;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+            line-height: 1;
+        }
+        .mode-icon-btn.active {
+            background: white;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+        }
+
+        .addr-count-badge {
+            margin-left: auto;
+            font-size: 0.73rem;
+            color: #64748b;
+            background: #f1f5f9;
+            padding: 4px 9px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        /* ─── Address List ─── */
+        .address-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .empty-hint {
+            color: #cbd5e1;
+            font-size: 0.77rem;
+            padding: 8px 0;
+            text-align: center;
+        }
+
+        .addr-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 7px;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 7px;
+            padding: 6px 8px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .addr-item.ok      { border-color: #86efac; background: #f0fdf4; }
+        .addr-item.err     { border-color: #fca5a5; background: #fff5f5; }
+        .addr-item.loading { border-color: #fbbf24; background: #fffbeb; }
+
+        .addr-badge {
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            background: #94a3b8;
+            color: white;
+            font-size: 10px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; margin-top: 2px;
+        }
+        .addr-badge.spin {
+            background: #f59e0b;
+            animation: spin 1s linear infinite;
+        }
+
+        .addr-body { flex: 1; min-width: 0; }
+
+        .addr-text {
+            font-size: 0.8rem;
+            color: #1e293b;
+            line-height: 1.35;
+            word-break: break-word;
+        }
+
+        .addr-error { font-size: 0.7rem; color: #ef4444; margin-top: 2px; }
+
+        .rm-btn {
+            background: none; border: none;
+            color: #cbd5e1; cursor: pointer;
+            font-size: 16px; line-height: 1;
+            padding: 0 2px; transition: color 0.15s; margin-top: 1px;
+        }
+        .rm-btn:hover { color: #f87171; }
+
+        /* ─── Depot ─── */
+        .depot-row {
+            display: flex; align-items: center; gap: 8px;
+            margin-bottom: 7px;
+        }
 
         .depot-icon {
-            width: 30px; height: 30px;
+            width: 28px; height: 28px;
             background: #1d4ed8;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 15px; flex-shrink: 0;
+            color: white; font-size: 13px; flex-shrink: 0;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 8px 10px;
+            padding: 7px 10px;
             border: 1.5px solid #e2e8f0;
             border-radius: 7px;
             font-size: 0.85rem;
@@ -83,7 +180,7 @@
         input[type="text"]:focus { border-color: #3b82f6; }
 
         select {
-            padding: 8px 10px;
+            padding: 7px 10px;
             border: 1.5px solid #e2e8f0;
             border-radius: 7px;
             font-size: 0.85rem;
@@ -100,53 +197,20 @@
         }
         select:focus { border-color: #3b82f6; }
 
-        /* ─── Travel Mode ─── */
-        .mode-toggle {
-            display: flex;
-            gap: 8px;
-            background: #f1f5f9;
-            border-radius: 8px;
-            padding: 4px;
-        }
-
-        .mode-btn {
-            flex: 1;
-            padding: 7px 10px;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            cursor: pointer;
-            background: transparent;
-            color: #64748b;
-            transition: all 0.2s;
-        }
-        .mode-btn.active {
-            background: white;
-            color: #1d4ed8;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.12);
-        }
-
-        /* ─── Structured Address Form ─── */
+        /* ─── Address Form ─── */
         .addr-form {
-            margin-top: 8px;
             display: flex;
             flex-direction: column;
             gap: 6px;
         }
 
-        .addr-form-row {
-            display: flex;
-            gap: 6px;
-        }
-
-        .addr-form-row input,
-        .addr-form-row select { flex: 1; min-width: 0; }
-        .no-input { flex: 0 0 72px !important; width: 72px; }
+        .addr-form-row { display: flex; gap: 6px; }
+        .addr-form-row input, .addr-form-row select { flex: 1; min-width: 0; }
+        .no-input { flex: 0 0 68px !important; }
 
         .add-addr-btn {
             width: 100%;
-            padding: 9px;
+            padding: 8px;
             background: #1d4ed8;
             color: white;
             border: none;
@@ -158,74 +222,16 @@
         }
         .add-addr-btn:hover { background: #1e40af; }
 
-        /* ─── Address List ─── */
-        .address-list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-bottom: 8px;
-        }
-
-        .empty-hint {
-            color: #cbd5e1;
-            font-size: 0.8rem;
-            padding: 10px 0 4px;
-            text-align: center;
-        }
-
-        .addr-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            background: #f8fafc;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 7px 8px;
-            transition: border-color 0.2s;
-        }
-        .addr-item.ok  { border-color: #86efac; background: #f0fdf4; }
-        .addr-item.err { border-color: #fca5a5; background: #fff5f5; }
-
-        .addr-badge {
-            width: 22px; height: 22px;
-            border-radius: 50%;
-            background: #94a3b8;
-            color: white;
-            font-size: 11px; font-weight: 700;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; margin-top: 3px;
-        }
-
-        .addr-body { flex: 1; min-width: 0; }
-
-        .addr-text {
-            font-size: 0.82rem;
-            color: #1e293b;
-            line-height: 1.4;
-            word-break: break-word;
-        }
-
-        .addr-error { font-size: 0.72rem; color: #ef4444; margin-top: 3px; }
-
-        .rm-btn {
-            background: none; border: none;
-            color: #cbd5e1; cursor: pointer;
-            font-size: 18px; line-height: 1;
-            padding: 0 2px; transition: color 0.15s; margin-top: 1px;
-        }
-        .rm-btn:hover { color: #f87171; }
-
-        .hint-text { font-size: 0.72rem; color: #94a3b8; margin-top: 5px; }
-
         /* ─── Optimize Button ─── */
         .opt-btn {
-            width: 100%; padding: 12px;
+            width: 100%; padding: 10px;
             background: #16a34a; color: white;
             border: none; border-radius: 8px;
-            font-size: 0.95rem; font-weight: 600;
+            font-size: 0.9rem; font-weight: 600;
             cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 8px;
             transition: background 0.2s, opacity 0.2s;
+            margin-top: 10px;
         }
         .opt-btn:hover:not(:disabled) { background: #15803d; }
         .opt-btn:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -234,57 +240,78 @@
         .result-panel {
             border-top: 1px solid #e2e8f0;
             flex-shrink: 0;
-            max-height: 50vh;
+            max-height: 45vh;
             overflow-y: auto;
-            padding: 14px 16px;
+            padding: 10px 12px;
             background: #fafafa;
         }
 
-        .stats-row { display: flex; gap: 8px; margin-bottom: 12px; }
-
-        .stat-card {
-            flex: 1; background: #eff6ff;
-            border-radius: 8px; padding: 8px 10px; text-align: center;
+        .result-header-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
         }
-        .stat-value { font-size: 1rem; font-weight: 700; color: #1d4ed8; }
-        .stat-label { font-size: 0.68rem; color: #64748b; margin-top: 1px; }
 
-        /* ─── External Map Buttons ─── */
-        .map-open-btns { display: flex; gap: 8px; margin-bottom: 12px; }
-
-        .map-open-btn {
+        .stats-inline {
+            display: flex;
+            gap: 5px;
             flex: 1;
-            padding: 9px 8px;
-            border: none; border-radius: 8px;
-            font-size: 0.8rem; font-weight: 600;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 6px;
-            transition: opacity 0.15s;
+            flex-wrap: wrap;
         }
-        .map-open-btn:hover { opacity: 0.85; }
+
+        .stat-chip {
+            background: #eff6ff;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            color: #1d4ed8;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .stat-chip span {
+            font-size: 0.65rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        /* ─── Map Icon Buttons (Google / Apple) ─── */
+        .map-icon-btns { display: flex; gap: 5px; }
+
+        .map-icon-btn {
+            width: 34px; height: 34px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.15s;
+            flex-shrink: 0;
+        }
+        .map-icon-btn:hover { opacity: 0.8; }
         .btn-google { background: #4285F4; color: white; }
         .btn-apple  { background: #1c1c1e; color: white; }
 
         /* ─── Route List ─── */
-        .route-list { display: flex; flex-direction: column; gap: 3px; }
+        .route-list { display: flex; flex-direction: column; gap: 2px; }
 
         .route-item {
             display: flex; align-items: flex-start;
-            gap: 8px; padding: 7px 8px; border-radius: 6px;
+            gap: 7px; padding: 5px 7px; border-radius: 6px;
         }
         .route-item:nth-child(odd)  { background: #f1f5f9; }
         .route-item:nth-child(even) { background: white; }
 
         .rnum {
-            width: 22px; height: 22px; border-radius: 50%;
+            width: 20px; height: 20px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 11px; font-weight: 700; flex-shrink: 0; color: white;
+            font-size: 10px; font-weight: 700; flex-shrink: 0; color: white;
         }
         .rnum.start { background: #1d4ed8; }
         .rnum.stop  { background: #7c3aed; }
 
-        .raddr { flex: 1; font-size: 0.8rem; color: #374151; line-height: 1.4; }
-        .rdur  { font-size: 0.72rem; color: #94a3b8; white-space: nowrap; padding-top: 2px; }
+        .raddr { flex: 1; font-size: 0.78rem; color: #374151; line-height: 1.35; }
+        .rdur  { font-size: 0.7rem; color: #94a3b8; white-space: nowrap; padding-top: 2px; }
 
         /* ─── Map ─── */
         .map-wrap { flex: 1; position: relative; }
@@ -292,14 +319,14 @@
 
         /* ─── Status Bar ─── */
         .status-bar {
-            flex-shrink: 0; padding: 7px 16px;
+            flex-shrink: 0; padding: 5px 14px;
             background: #f8fafc; border-top: 1px solid #e2e8f0;
-            font-size: 0.78rem; color: #64748b;
+            font-size: 0.74rem; color: #64748b;
             display: flex; align-items: center; gap: 8px;
         }
 
         .spinner {
-            width: 13px; height: 13px;
+            width: 12px; height: 12px;
             border: 2px solid #e2e8f0; border-top-color: #3b82f6;
             border-radius: 50%;
             animation: spin 0.75s linear infinite; flex-shrink: 0;
@@ -309,10 +336,9 @@
 
         @media (max-width: 700px) {
             .main { flex-direction: column; }
-            .sidebar { width: 100%; min-width: unset; max-height: 60vh; }
-            .map-wrap { min-height: 40vh; }
-            .result-panel { max-height: 40vh; }
-            /* Prevent iOS auto-zoom on input focus */
+            .sidebar { width: 100%; min-width: unset; max-height: 62vh; border-right: none; border-bottom: 1px solid #e2e8f0; }
+            .map-wrap { min-height: 38vh; }
+            .result-panel { max-height: 38vh; }
             input[type="text"], select { font-size: 16px; }
         }
     </style>
@@ -320,7 +346,7 @@
 <body>
 
 <header>
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0"/>
         <path d="M12 8l-4 4 4 4M8 12h8"/>
     </svg>
@@ -331,51 +357,42 @@
     <div class="sidebar">
         <div class="sidebar-scroll">
 
-            <!-- Başlangıç Noktası -->
-            <div class="section">
-                <div class="section-title">Başlangıç Noktası</div>
-                <div class="depot-row">
-                    <div class="depot-icon">⌂</div>
-                    <input type="text" id="depotInput" placeholder="Başlangıç adresi girin..." />
+            <!-- Ulaşım modu + adres sayısı -->
+            <div class="mode-bar">
+                <div class="mode-icons">
+                    <button class="mode-icon-btn active" id="btnDriving" onclick="setMode('driving')" title="Araba ile">🚗</button>
+                    <button class="mode-icon-btn" id="btnFoot" onclick="setMode('foot')" title="Yaya">🚶</button>
                 </div>
+                <span class="addr-count-badge"><span id="addrCount">0</span> adres</span>
             </div>
 
-            <!-- Ulaşım Modu -->
-            <div class="section">
-                <div class="section-title">Ulaşım Modu</div>
-                <div class="mode-toggle">
-                    <button class="mode-btn active" id="btnDriving" onclick="setMode('driving')">🚗 Araba</button>
-                    <button class="mode-btn" id="btnFoot" onclick="setMode('foot')">🚶 Yaya</button>
-                </div>
+            <!-- Adres listesi -->
+            <div class="address-list" id="addressList">
+                <div class="empty-hint">Henüz adres eklenmedi</div>
             </div>
 
-            <!-- Route Adresleri -->
-            <div class="section">
-                <div class="section-title">Route Adresleri (<span id="addrCount">0</span>)</div>
+            <!-- Başlangıç noktası — adres formunun hemen üstünde -->
+            <div class="depot-row">
+                <div class="depot-icon">⌂</div>
+                <input type="text" id="depotInput" placeholder="Başlangıç adresi..." />
+            </div>
 
-                <!-- Kuyruk listesi -->
-                <div class="address-list" id="addressList">
-                    <div class="empty-hint">Henüz adres eklenmedi</div>
+            <!-- Adres ekleme formu -->
+            <div class="addr-form">
+                <div class="addr-form-row">
+                    <select id="fIl" onchange="updateDistricts()"></select>
+                    <select id="fIlce"></select>
                 </div>
-
-                <!-- Yapılandırılmış adres formu -->
-                <div class="addr-form">
-                    <div class="addr-form-row">
-                        <select id="fIl"   onchange="updateDistricts()"></select>
-                        <select id="fIlce"></select>
-                    </div>
-                    <div class="addr-form-row">
-                        <input type="text" id="fSokak" placeholder="Sokak / Cadde" />
-                        <input type="text" id="fNo" placeholder="No" class="no-input" />
-                    </div>
-                    <button class="add-addr-btn" onclick="addStructuredAddress()">+ Adres Ekle</button>
+                <div class="addr-form-row">
+                    <input type="text" id="fSokak" placeholder="Sokak / Cadde" />
+                    <input type="text" id="fNo" placeholder="No" class="no-input" />
                 </div>
-                <div class="hint-text">Adres bulunamazsa OSM haritasında kayıtlı olmayabilir — sokak adını kontrol edin.</div>
+                <button class="add-addr-btn" onclick="addStructuredAddress()">+ Adres Ekle</button>
             </div>
 
             <!-- Optimize -->
             <button class="opt-btn" id="optimizeBtn" onclick="optimizeRoute()" disabled>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
                     <polyline points="17 6 23 6 23 12"/>
                 </svg>
@@ -386,17 +403,16 @@
 
         <!-- Sonuç Paneli -->
         <div class="result-panel" id="resultPanel" style="display:none;">
-            <div class="section-title" style="margin-bottom:10px;">Optimize Edilmiş Rota</div>
-            <div class="stats-row" id="statsRow"></div>
-            <div class="map-open-btns">
-                <button class="map-open-btn btn-google" onclick="openGoogleMaps()">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                    Google Maps
-                </button>
-                <button class="map-open-btn btn-apple" onclick="openAppleMaps()">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                    Apple Maps
-                </button>
+            <div class="result-header-row">
+                <div class="stats-inline" id="statsRow"></div>
+                <div class="map-icon-btns">
+                    <button class="map-icon-btn btn-google" onclick="openGoogleMaps()" title="Google Maps'te Aç">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    </button>
+                    <button class="map-icon-btn btn-apple" onclick="openAppleMaps()" title="Apple Maps'te Aç">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    </button>
+                </div>
             </div>
             <div class="route-list" id="routeList"></div>
         </div>
@@ -413,7 +429,6 @@
 /* ═══════════════════════════════════════
    STATE
 ═══════════════════════════════════════ */
-// { text, il, ilce, sokak, no, geocoded:{lat,lon,display}|null, error:string|null }
 const addresses = [];
 let travelMode = 'driving';
 let lastRoute  = null;
@@ -456,10 +471,12 @@ function renderList() {
     }
 
     el.innerHTML = addresses.map((a, i) => {
-        const cls = a.geocoded ? 'ok' : a.error ? 'err' : '';
+        const cls        = a.loading ? 'loading' : a.geocoded ? 'ok' : a.error ? 'err' : '';
+        const badgeCls   = a.loading ? ' spin' : '';
+        const badgeLabel = a.loading ? '↻' : (i + 1);
         return `
         <div class="addr-item ${cls}">
-            <div class="addr-badge">${i + 1}</div>
+            <div class="addr-badge${badgeCls}">${badgeLabel}</div>
             <div class="addr-body">
                 <div class="addr-text">${esc(a.text)}</div>
                 ${a.error ? `<div class="addr-error">⚠ ${esc(a.error)}</div>` : ''}
@@ -469,7 +486,7 @@ function renderList() {
     }).join('');
 }
 
-function addStructuredAddress() {
+async function addStructuredAddress() {
     const il    = document.getElementById('fIl').value.trim();
     const ilce  = document.getElementById('fIlce').value.trim();
     const sokak = document.getElementById('fSokak').value.trim();
@@ -488,12 +505,28 @@ function addStructuredAddress() {
     if (il)   parts.push(il);
     const text = parts.join(', ');
 
-    addresses.push({ text, il, ilce, sokak, no, geocoded: null, error: null });
+    const addr = { text, il, ilce, sokak, no, geocoded: null, error: null, loading: true };
+    addresses.push(addr);
 
     document.getElementById('fSokak').value = '';
     document.getElementById('fNo').value    = '';
     document.getElementById('fSokak').focus();
     renderList();
+
+    // Geocode immediately — show green/red without needing to optimize
+    addr._geocodePromise = geocodeAddr(addr)
+        .then(coord => {
+            addr.geocoded = coord;
+            addr.error    = null;
+        })
+        .catch(e => {
+            addr.error    = e.message;
+            addr.geocoded = null;
+        })
+        .finally(() => {
+            addr.loading = false;
+            renderList();
+        });
 }
 
 function removeAddr(idx) {
@@ -501,7 +534,6 @@ function removeAddr(idx) {
     renderList();
 }
 
-// Enter on Sokak or No triggers add
 document.getElementById('fSokak').addEventListener('keydown', e => {
     if (e.key === 'Enter') addStructuredAddress();
 });
@@ -551,7 +583,6 @@ function fmtDist(m) {
 ═══════════════════════════════════════ */
 const NOM_HEADERS = { 'Accept-Language': 'tr', 'User-Agent': 'RouteOptimizer/1.0' };
 
-// Free-text geocode (used for depot)
 async function geocode(text) {
     const q = /[iİ]zmir/i.test(text) ? text : `${text}, İzmir`;
     const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1&viewbox=26.5,38.8,27.6,38.1&bounded=0`;
@@ -562,7 +593,6 @@ async function geocode(text) {
     return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon), display: data[0].display_name };
 }
 
-// Structured geocode — uses Nominatim's structured params for better accuracy, falls back to free-text
 async function geocodeAddr(addr) {
     const street = addr.no ? `${addr.no} ${addr.sokak}` : addr.sokak;
     let qstr = `street=${encodeURIComponent(street)}`;
@@ -576,7 +606,6 @@ async function geocodeAddr(addr) {
     if (data.length) {
         return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon), display: data[0].display_name };
     }
-    // Fallback: combine all parts as a free-text query
     const fallbackUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addr.text)}&format=json&limit=1&viewbox=26.5,38.8,27.6,38.1&bounded=0`;
     const res2 = await fetch(fallbackUrl, { headers: NOM_HEADERS });
     if (!res2.ok) throw new Error('Geocoding servisi yanıt vermedi');
@@ -701,6 +730,16 @@ async function optimizeRoute() {
     document.getElementById('resultPanel').style.display = 'none';
     lastRoute = null;
 
+    // 0. Bekleyen anlık geocode işlemlerini tamamla
+    const pending = addresses
+        .filter(a => a.loading && a._geocodePromise)
+        .map(a => a._geocodePromise);
+    if (pending.length > 0) {
+        setStatus('Adresler doğrulanıyor…', true);
+        await Promise.all(pending);
+        renderList();
+    }
+
     // 1. Depot geocode
     setStatus('Başlangıç noktası konuma dönüştürülüyor…', true);
     let depotCoord;
@@ -712,7 +751,7 @@ async function optimizeRoute() {
         return;
     }
 
-    // 2. Adresler geocode et (önbellekte olanları atla)
+    // 2. Adresler geocode et (önbellekte olanları atla, hatalıları yeniden dene)
     const allCoords = [depotCoord];
     let hasError = false;
 
@@ -721,7 +760,8 @@ async function optimizeRoute() {
             allCoords.push(addresses[i].geocoded);
             continue;
         }
-        await sleep(1100); // Nominatim rate limit
+        addresses[i].error = null;
+        await sleep(1100);
         setStatus(`Adres ${i + 1}/${addresses.length} konuma dönüştürülüyor…`, true);
         try {
             const coord = await geocodeAddr(addresses[i]);
@@ -753,7 +793,7 @@ async function optimizeRoute() {
         return;
     }
 
-    // 4. TSP — nearest neighbor + 2-opt
+    // 4. TSP
     setStatus('En kısa rota hesaplanıyor…', true);
     const order         = twoOpt(nearestNeighbor(matrix.durations, 0), matrix.durations);
     const orderedCoords = order.map(i => allCoords[i]);
@@ -815,9 +855,9 @@ async function optimizeRoute() {
 
     // 8. Sonuç paneli
     document.getElementById('statsRow').innerHTML = `
-        <div class="stat-card"><div class="stat-value">${fmtDuration(totalSec)}</div><div class="stat-label">Toplam Süre</div></div>
-        <div class="stat-card"><div class="stat-value">${fmtDist(totalM)}</div><div class="stat-label">Toplam Mesafe</div></div>
-        <div class="stat-card"><div class="stat-value">${addresses.length}</div><div class="stat-label">Durak Sayısı</div></div>`;
+        <div class="stat-chip">${fmtDuration(totalSec)} <span>süre</span></div>
+        <div class="stat-chip">${fmtDist(totalM)} <span>mesafe</span></div>
+        <div class="stat-chip">${addresses.length} <span>durak</span></div>`;
 
     document.getElementById('routeList').innerHTML = order.map((origIdx, pos) => {
         const isStart = origIdx === 0;
@@ -939,7 +979,6 @@ function updateDistricts(defaultVal) {
 initMap();
 renderList();
 
-// Populate city dropdown, default İzmir → Bayraklı
 const _ilSel = document.getElementById('fIl');
 Object.keys(TURKEY).sort((a, b) => a.localeCompare(b, 'tr')).forEach(il => {
     const opt = document.createElement('option');
